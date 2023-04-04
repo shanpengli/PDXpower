@@ -3,10 +3,11 @@
 ##' @param n an integer number to specify the number of PDX lines.
 ##' @param m an integer number to specify the number of individuals per PDX line per treatment.
 ##' @param beta Treatment effect for the treated group.
-##' @param sigma2 Error variance of log survival time for both treatment groups.
-##' @param alpha Signifiance level. Default is 0.05.
+##' @param tau2 variance of PDOX line specific random effect.
+##' @param alpha significance level. Default is 0.05.
 ##' @param lambda Scale parameter of Weibull distribution for the baseline hazard.
 ##' @param nu Shape parameter of Weibull distribution for the baseline hazard.
+##' @param sigma2 Error variance of log survival time for both treatment groups.
 ##' @param two.sided A logical value to indicate if a two-sided hypothesis testing is conducted.
 ##' Default is TRUE.
 ##' @param sim Number of Monte Carlo samples to be generated. Default is 1000.

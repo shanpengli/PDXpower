@@ -29,7 +29,9 @@ PowerTable(
 
 \item{beta}{Treatment effect for the treated group.}
 
-\item{alpha}{Signifiance level. Default is 0.05.}
+\item{tau2}{variance of PDOX line specific random effect.}
+
+\item{alpha}{significance level. Default is 0.05.}
 
 \item{lambda}{Scale parameter of Weibull distribution for the baseline hazard.}
 

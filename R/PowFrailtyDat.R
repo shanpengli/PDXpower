@@ -14,17 +14,17 @@
 ##' @examples
 ##' require(PDXpower)
 ##' data <- SimPDXdata(seed = 1000, n = 3, m = 3, beta = -0.8, tau2 = 0.2, lambda = 0.03,
-##' nu = 2, sigma2 = 1, distr = "weibull", lambdaC = 0.1, censor = TRUE)
+##' nu = 2, sigma2 = 1, distr = "Weibull", lambdaC = 0.1, censor = TRUE)
 ##'
 ##'PowTab <- PowFrailtyDat(data = data, formula = Surv(Y,status) ~ Tx + cluster(ID),
 ##'n = c(3, 5, 10), m = c(2, 3, 4))
-##'
 ##'PowTab
+##'plotpower(PowTab, ylim = c(0, 1))
 ##'
 ##' @export
 
 PowFrailtyDat <- function(data = NULL, formula = NULL, maxit = 50, hazard = "Weibull",
-                          n = NULL, m = NULL, sim = 100, censor = FALSE, two.sided = TRUE, ncores = NULL) {
+                          n = NULL, m = NULL, sim = 1000, censor = FALSE, two.sided = TRUE, ncores = NULL) {
 
   if (!is.data.frame(data))
     stop("This is not a date frame.")
