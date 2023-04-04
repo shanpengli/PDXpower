@@ -1,0 +1,53 @@
+---
+title: "PDXpower"
+output: rmarkdown::html_vignette
+fig_width: 20 
+fig_height: 4 
+vignette: >
+  %\VignetteIndexEntry{PDXpower}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+knitr::opts_chunk$set(fig.width=8, fig.height=4) 
+```
+
+```{r}
+library(PDXpower)
+
+n = c(2, 3, 4, 5) ## number of PDX lines 
+m = c(5, 7, 9, 11) ## number of mice per PDX line per treatment group
+a <- PowerTable(n = n, m = m, betaA = log(30), betaB = log(40), 
+                          sigma2 = 0.2^2, rho = 0.1, sim = 1000, seed = 100)
+## exp(betaA) = median survival time for group A is 30 days
+## exp(betaB) = median survival time for group B is 60 days
+## sigma2 = variance of log survival time for both groups
+## rho = within-subject correlation between mice within the same PDX line
+## sim = number of Monte Carlo samples to be generated
+## alpha = two-sided test of (TBD) significance level
+## one.sided = FALSE (TBD)
+plotpower(a)
+```
+
+```{r}
+n = c(3, 4, 5) ## number of PDX lines 
+m = c(9, 12, 15) ## number of mice per PDX line per treatment group
+a <- PowerTable(n = n, m = m, betaA = log(30), betaB = log(30), 
+                          sigma2 = 0.2^2, rho = 0.4, sim = 1000, seed = 1100)
+## exp(betaA) = median survival time for group A is 30 days
+## exp(betaB) = median survival time for group B is 60 days
+## sigma2 = variance of log survival time for both groups
+## rho = within-subject correlation between mice within the same PDX line
+## sim = number of Monte Carlo samples to be generated
+## alpha = two-sided test of (TBD) significance level
+## one.sided = FALSE (TBD)
+plotpower(a)
+
+```
+

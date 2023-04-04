@@ -9,23 +9,23 @@
 ##' @param beta Treatment effect for the treated group.
 ##' @param tau2 Error variance of random effect.
 ##' @param alpha Signifiance level. Default is 0.05.
-##' @param lambda Scale parameter of weibull distribution for the baseline hazard.
-##' @param nu Shape parameter of weibull distribution for the baseline hazard.
+##' @param lambda Scale parameter of Weibull distribution for the baseline hazard.
+##' @param nu Shape parameter of Weibull distribution for the baseline hazard.
 ##' @param sigma2 Error variance of log survival time for both treatment groups.
 ##' @param distr distributional assumption of survival time.
 ##' @param two.sided Logical value to indicate if a two-sided hypothesis testing is conducted.
 ##' @param lambdaC Rate parameter of exponential distribution for the hazard of censoring.
-##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.
+##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.
 ##' @export
 ##'
 
 bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
-                     nu = 2, sigma2 = 1, distr = c("weibull", "normal"), two.sided = TRUE,
+                     nu = 2, sigma2 = 1, distr = c("Weibull", "normal"), two.sided = TRUE,
                     lambdaC = 0.1, censor = TRUE) {
 
   set.seed(100+seed)
   Data <- NULL
-  if (distr == "weibull") {
+  if (distr == "Weibull") {
     for (i in 1:n) {
       subY <- vector()
       subX <- vector()

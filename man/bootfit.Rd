@@ -16,7 +16,7 @@ bootfit(
   lambda = 0.03,
   nu = 2,
   sigma2 = 1,
-  distr = c("weibull", "normal"),
+  distr = c("Weibull", "normal"),
   two.sided = TRUE,
   lambdaC = 0.1,
   censor = TRUE
@@ -35,9 +35,9 @@ bootfit(
 
 \item{alpha}{Signifiance level. Default is 0.05.}
 
-\item{lambda}{Scale parameter of weibull distribution for the baseline hazard.}
+\item{lambda}{Scale parameter of Weibull distribution for the baseline hazard.}
 
-\item{nu}{Shape parameter of weibull distribution for the baseline hazard.}
+\item{nu}{Shape parameter of Weibull distribution for the baseline hazard.}
 
 \item{sigma2}{Error variance of log survival time for both treatment groups.}
 
@@ -47,7 +47,7 @@ bootfit(
 
 \item{lambdaC}{Rate parameter of exponential distribution for the hazard of censoring.}
 
-\item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.}
+\item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.}
 }
 \description{
 A function to calculate the power under pre-specified effect size, variance, and

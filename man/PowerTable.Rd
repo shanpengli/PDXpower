@@ -15,11 +15,11 @@ PowerTable(
   nu = 2,
   sigma2 = 1,
   two.sided = TRUE,
-  distr = c("weibull", "normal"),
+  distr = c("Weibull", "normal"),
   lambdaC = 0.1,
   censor = TRUE,
   sim = 1000,
-  ncores = 10
+  ncores = NULL
 )
 }
 \arguments{
@@ -31,9 +31,9 @@ PowerTable(
 
 \item{alpha}{Signifiance level. Default is 0.05.}
 
-\item{lambda}{Scale parameter of weibull distribution for the baseline hazard.}
+\item{lambda}{Scale parameter of Weibull distribution for the baseline hazard.}
 
-\item{nu}{Shape parameter of weibull distribution for the baseline hazard.}
+\item{nu}{Shape parameter of Weibull distribution for the baseline hazard.}
 
 \item{sigma2}{Error variance of log survival time for both treatment groups.}
 
@@ -57,11 +57,26 @@ various number of PDX lines and number of individuals per PDX lines per treatmen
 \examples{
 
 require(PDXpower)
-n = c(4, 6)
-m = c(1, 2)
-a <- PowerTable(n = n, m = m, betaB = 0,
-                tau2 = 0.5, sim = 10)
-plotpower(a)
+data <- SimPDXdata(seed = 1000, n = 3, m = 3, beta = -0.8, tau2 = 0.2, lambda = 0.03,
+nu = 2, sigma2 = 1, distr = "Weibull", lambdaC = 0.1, censor = TRUE)
+CoxRandom <- frailtypack::frailtyPenal(survival::Surv(Y,status) ~ Tx + cluster(ID),
+                                       data=data, RandDist = "LogN",
+                                       print.times = FALSE, maxit = 50, hazard = "Weibull")
+
+lambda <- CoxRandom$scale.weib[1]^(-CoxRandom$shape.weib[1])
+nu <- CoxRandom$shape.weib[1]
+beta <- CoxRandom$coef
+tau2 <- CoxRandom$sigma2
+
+n <- c(3, 5, 10)
+m <- c(2, 3, 4)
+fit <- PowerTable(n = n, m = m, beta = beta, lambda = lambda, nu = nu,
+                  tau2 = tau2, distr = "Weibull", sim = 100,
+                  censor = FALSE,
+                  ncores = 7)
+
+plotpower(fit, ylim = c(0.5, 1))
+
 }
 \seealso{
 \code{\link{plotpower}}

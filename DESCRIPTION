@@ -10,5 +10,9 @@ Encoding: UTF-8
 Depends: R (>= 3.0.0),nlme,frailtypack,survival,ggplot2,ggpubr,stats
 LazyData: true
 RoxygenNote: 7.2.3
-Suggests: knitr, rmarkdown
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3

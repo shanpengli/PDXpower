@@ -15,7 +15,7 @@ SimPDXdata(
   lambda = 0.03,
   nu = 2,
   sigma2 = 1,
-  distr = c("weibull", "normal"),
+  distr = c("Weibull", "normal"),
   two.sided = TRUE,
   lambdaC = 0.1,
   censor = TRUE
@@ -32,9 +32,9 @@ SimPDXdata(
 
 \item{tau2}{Error variance of random effect.}
 
-\item{lambda}{Scale parameter of weibull distribution for the baseline hazard.}
+\item{lambda}{Scale parameter of Weibull distribution for the baseline hazard.}
 
-\item{nu}{Shape parameter of weibull distribution for the baseline hazard.}
+\item{nu}{Shape parameter of Weibull distribution for the baseline hazard.}
 
 \item{sigma2}{Error variance of log survival time for both treatment groups.}
 

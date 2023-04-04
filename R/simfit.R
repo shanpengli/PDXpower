@@ -2,9 +2,9 @@
 ##'
 
 simfit <- function(sim = 500, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
-                   nu = 2, two.sided = TRUE, sigma2 = 1, distr = c("weibull", "normal"), lambdaC = 0.1, censor = TRUE, ncores = 10) {
+                   nu = 2, two.sided = TRUE, sigma2 = 1, distr = c("Weibull", "normal"), lambdaC = 0.1, censor = TRUE, ncores = 10) {
 
-  if (distr == "weibull") {
+  if (distr == "Weibull") {
     ParaMatrixRaw <- parallel::mclapply(1:sim, bootfit,
                                         n = n, m = m,
                                         beta = beta, tau2 = tau2, alpha = alpha,
