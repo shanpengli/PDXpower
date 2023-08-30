@@ -12,7 +12,7 @@
 ##' @param ncores number of cores for parallel computation.
 ##' @examples
 ##' require(PDXpower)
-##' PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100,
+##' PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100,
 ##' n = c(3, 5, 10), m = c(2, 3, 4))
 ##' PowTab
 ##' plotpower(PowTab, ylim = c(0, 1))
@@ -20,16 +20,15 @@
 ##' @export
 ##'
 
-PowFrailty <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1,
-                       n = NULL, m = NULL, sim = 1000, censor = FALSE,
+PowANOVA <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = 0.1, sigma2 = 1,
+                       n = NULL, m = NULL, sim = 100,
                        two.sided = TRUE, ncores = NULL) {
 
-  lambda <- log(2)^(1/nu)/ctl.med.surv
   beta <- log(ctl.med.surv/tx.med.surv)
 
-  fit <- PowerTable(n = n, m = m, beta = beta, lambda = lambda, nu = nu,
-                    tau2 = tau2, distr = "Weibull", sim = sim,
-                    censor = censor, two.sided = two.sided, print = "Cox-frailty",
+  fit <- PowerTable(n = n, m = m, beta = beta, sigma2 = sigma2,
+                    tau2 = tau2, distr = "normal", sim = sim,
+                    censor = FALSE, two.sided = two.sided, print = "ANOVA",
                     ncores = ncores)
 
   return(fit)

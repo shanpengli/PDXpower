@@ -14,6 +14,10 @@
 ##' @param distr Distributional assumption of the simulated event time.
 ##' @param lambdaC Rate parameter of exponential distribution for the hazard of censoring.
 ##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.
+##' @param print a string to indicate which model result to be printed.
+##' If \code{print = "both"}, then the power curves of both models will be printed.
+##' Otherwise, print a power curve from one of the two models by specifying
+##' either \code{print = "ANOVA"} or \code{print = "Cox-frailty"}.
 ##' @param ncores number of cores for parallel computation.
 ##' @examples
 ##'
@@ -34,6 +38,7 @@
 ##' fit <- PowerTable(n = n, m = m, beta = beta, lambda = lambda, nu = nu,
 ##'                   tau2 = tau2, distr = "Weibull", sim = 100,
 ##'                   censor = FALSE,
+##'                   print = "both",
 ##'                   ncores = 7)
 ##'
 ##' plotpower(fit, ylim = c(0.5, 1))
@@ -44,7 +49,8 @@
 
 PowerTable <- function(n, m, beta, tau2 = 0.5, alpha = 0.05, lambda = 0.03,
                        nu = 2, sigma2 = 1, two.sided = TRUE, distr = c("Weibull", "normal"),
-                       lambdaC = 0.1, censor = TRUE, sim = 1000, ncores = NULL) {
+                       lambdaC = 0.1, censor = TRUE, sim = 1000,
+                       print = c("both", "ANOVA", "Cox-frailty"), ncores = NULL) {
 
   if (is.null(ncores)) {
     ncores <- parallel::detectCores()
@@ -93,7 +99,9 @@ PowerTable <- function(n, m, beta, tau2 = 0.5, alpha = 0.05, lambda = 0.03,
   SumPowertable$nsim <- sim
   SumPowertable$sigma2 <- sigma2
   SumPowertable$censor <- censor
+  SumPowertable$print <- print
   SumPowertable$call <- match.call()
+
 
   return(SumPowertable)
 

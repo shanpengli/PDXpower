@@ -45,6 +45,7 @@ PowFrailtyDat <- function(data = NULL, formula = NULL, maxit = 50, hazard = "Wei
                     tau2 = tau2, distr = hazard, sim = sim,
                     censor = censor,
                     two.sided = two.sided,
+                    print = "Cox-frailty",
                     ncores = ncores)
   return(fit)
 

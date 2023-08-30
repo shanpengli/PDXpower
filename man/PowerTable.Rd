@@ -19,6 +19,7 @@ PowerTable(
   lambdaC = 0.1,
   censor = TRUE,
   sim = 1000,
+  print = c("both", "ANOVA", "Cox-frailty"),
   ncores = NULL
 )
 }
@@ -50,6 +51,11 @@ Default is TRUE.}
 
 \item{sim}{Number of Monte Carlo samples to be generated. Default is 1000.}
 
+\item{print}{a string to indicate which model result to be printed.
+If \code{print = "both"}, then the power curves of both models will be printed.
+Otherwise, print a power curve from one of the two models by specifying
+either \code{print = "ANOVA"} or \code{print = "Cox-frailty"}.}
+
 \item{ncores}{number of cores for parallel computation.}
 }
 \description{
@@ -75,6 +81,7 @@ m <- c(2, 3, 4)
 fit <- PowerTable(n = n, m = m, beta = beta, lambda = lambda, nu = nu,
                   tau2 = tau2, distr = "Weibull", sim = 100,
                   censor = FALSE,
+                  print = "both",
                   ncores = 7)
 
 plotpower(fit, ylim = c(0.5, 1))
