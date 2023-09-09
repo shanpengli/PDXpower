@@ -13,13 +13,12 @@
 ##' @param ncores number of cores for parallel computation.
 ##' @examples
 ##' require(PDXpower)
-##' data <- SimPDXdata(seed = 1000, n = 3, m = 3, beta = -0.8, tau2 = 0.2, lambda = 0.03,
-##' nu = 2, sigma2 = 1, distr = "Weibull", lambdaC = 0.1, censor = TRUE)
+##' data(mice)
 ##'
-##'PowTab <- PowFrailtyDat(data = data, formula = Surv(Y,status) ~ Tx + cluster(ID),
+##'PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y,status) ~ Tx + cluster(ID),
 ##'n = c(3, 5, 10), m = c(2, 3, 4))
 ##'PowTab
-##'plotpower(PowTab, ylim = c(0, 1))
+##'plotpower(PowTab[[5]], ylim = c(0, 1))
 ##'
 ##' @export
 
@@ -47,6 +46,11 @@ PowFrailtyDat <- function(data = NULL, formula = NULL, maxit = 50, hazard = "Wei
                     two.sided = two.sided,
                     print = "Cox-frailty",
                     ncores = ncores)
-  return(fit)
+
+  result <- list(lambda = lambda, nu = nu, beta = beta, tau2 = tau2, PowTab = fit)
+
+  class(result) <- "PowFrailtyDat"
+
+  return(result)
 
 }

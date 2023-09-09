@@ -40,12 +40,11 @@ various number of PDX lines and number of individuals per PDX lines per treatmen
 }
 \examples{
 require(PDXpower)
-data <- SimPDXdata(seed = 1000, n = 3, m = 3, beta = -0.8, tau2 = 0.1, sigma2 = 1,
-distr = "normal", censor = FALSE)
+data(mice)
 
-PowTab <- PowANOVADat(data = data, formula = log(Y) ~ Tx, random = ~ 1|ID,
+PowTab <- PowANOVADat(data = mice, formula = log(Y) ~ Tx, random = ~ 1|ID,
 n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
-plotpower(PowTab, ylim = c(0, 1))
+plotpower(PowTab[[4]], ylim = c(0, 1))
 
 }
