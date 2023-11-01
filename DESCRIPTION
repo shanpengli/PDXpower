@@ -7,7 +7,7 @@ Maintainer: Shanpeng Li <lishanpeng0913@ucla.edu>
 Description: Power calculation for 
 License: GPL (>= 2)
 Encoding: UTF-8
-Depends: R (>= 3.0.0),nlme,frailtypack,survival,ggplot2,ggpubr,stats
+Depends: R (>= 3.5.0),nlme,frailtypack,survival,ggplot2,ggpubr,stats
 LazyData: true
 RoxygenNote: 7.2.3
 Suggests: 

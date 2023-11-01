@@ -17,14 +17,14 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
                          object$ANCOVArandom,
                          object$Coxrandom)
 
-    colnames(object) <- c("PDOX lines", "NofMice", "ANCOVArandom", "Coxrandom")
+    colnames(object) <- c("PDOX lines", "Number of mice", "ANCOVArandom", "Coxrandom")
 
-    object$NofMice <- as.factor(object$NofMice)
+    object$`Number of mice` <- as.factor(object$`Number of mice`)
 
     p2 <- ggplot2::ggplot(object,
                           ggplot2::aes(x = `PDOX lines`, y = ANCOVArandom,
-                                       group = NofMice,
-                                       color = NofMice)) +
+                                       group = `Number of mice`,
+                                       color = `Number of mice`)) +
       ggplot2::geom_line() +
       ggplot2::ylab("Power for ANOVA") +
       ggplot2::xlab("Number of PDX lines") +
@@ -33,8 +33,8 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
 
     p4 <- ggplot2::ggplot(object,
                           ggplot2::aes(x = `PDOX lines`, y = Coxrandom,
-                                       group = NofMice,
-                                       color = NofMice)) +
+                                       group = `Number of mice`,
+                                       color = `Number of mice`)) +
       ggplot2::geom_line() +
       ggplot2::ylab("Power for Cox frailty") +
       ggplot2::xlab("Number of PDX lines") +
@@ -49,13 +49,13 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
     object <- data.frame(object$NofLine, object$NofMice,
                          object$ANCOVArandom)
 
-    colnames(object) <- c("PDOX lines", "NofMice", "ANCOVArandom")
+    colnames(object) <- c("PDOX lines", "Number of mice", "ANCOVArandom")
 
-    object$NofMice <- as.factor(object$NofMice)
+    object$`Number of mice` <- as.factor(object$`Number of mice`)
 
     ggplot2::ggplot(object, ggplot2::aes(x = `PDOX lines`, y = ANCOVArandom,
-                                       group = NofMice,
-                                       color = NofMice)) +
+                                       group = `Number of mice`,
+                                       color = `Number of mice`)) +
       ggplot2::geom_line() +
       ggplot2::ylab("Power for ANOVA") +
       ggplot2::xlab("Number of PDX lines") +
@@ -67,14 +67,14 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
     object <- data.frame(object$NofLine, object$NofMice,
                          object$Coxrandom)
 
-    colnames(object) <- c("PDOX lines", "NofMice", "Coxrandom")
+    colnames(object) <- c("PDOX lines", "Number of mice", "Coxrandom")
 
-    object$NofMice <- as.factor(object$NofMice)
+    object$`Number of mice` <- as.factor(object$`Number of mice`)
 
     ggplot2::ggplot(object,
                     ggplot2::aes(x = `PDOX lines`, y = Coxrandom,
-                                       group = NofMice,
-                                       color = NofMice)) +
+                                       group = `Number of mice`,
+                                       color = `Number of mice`)) +
       ggplot2::geom_line() +
       ggplot2::ylab("Power for Cox frailty") +
       ggplot2::xlab("Number of PDX lines") +

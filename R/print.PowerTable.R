@@ -19,19 +19,21 @@ print.PowerTable <- function(x, digits = 2, ...) {
   if (print == "both") {
     data <- data.frame(x$NofLine, x$NofMice,
                        round(x$ANCOVArandom, digits = digits),
-                       round(x$Coxrandom, digits = digits))
+                       round(x$Coxrandom, digits = digits),
+                       round(x$censoringrate, digits = digits))
 
-    colnames(data) <- c("PDX lines", "Mice", "ANOVA", "Cox Frailty")
+    colnames(data) <- c("n", "m", "ANOVA", "Cox Frailty", "Censoring Rate")
   } else if (print == "Cox-frailty") {
     data <- data.frame(x$NofLine, x$NofMice,
-                       round(x$Coxrandom, digits = digits))
+                       round(x$Coxrandom*100, digits = digits),
+                       round(x$censoringrate, digits = digits))
 
-    colnames(data) <- c("PDX lines", "Mice", "Cox Frailty")
+    colnames(data) <- c("n", "m", "Power (%)", "Censoring Rate")
   } else {
     data <- data.frame(x$NofLine, x$NofMice,
-                       round(x$ANCOVArandom, digits = digits))
+                       round(x$ANCOVArandom*100, digits = digits))
 
-    colnames(data) <- c("PDX lines", "Mice", "ANOVA")
+    colnames(data) <- c("n", "m", "Power (%)")
   }
 
 

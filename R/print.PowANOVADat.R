@@ -18,8 +18,11 @@ print.PowANOVADat <- function(x, digits = 4, ...) {
   cat("An ANOVA mixed effects model was fitted\n")
   cat("Summary of parameter estimates from the data:\n")
   cat("Treatment effect (beta):", round(x$beta, digits), "\n")
-  cat("Variance of random effect (alpha):", round(x$tau2, digits), "\n")
+  cat("Variance of random effect (tau2):", round(x$tau2, digits), "\n")
   cat("Random error variance (sigma2):", round(x$sigma2, digits), "\n")
+  cat("The above parameters are used for Monte Carlo data generation from a ANOVA mixed effects model.\n")
+  cat("Power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated based on the proportion of rejecting the null hypothesis beta = 0.\n")
+
   print(x$PowTab)
 
 }

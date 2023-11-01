@@ -19,7 +19,8 @@ bootfit(
   distr = c("Weibull", "normal"),
   two.sided = TRUE,
   lambdaC = 0.1,
-  censor = TRUE
+  censor = TRUE,
+  model = c("both", "ANOVA", "Cox-frailty")
 )
 }
 \arguments{
@@ -48,6 +49,8 @@ bootfit(
 \item{lambdaC}{Rate parameter of exponential distribution for the hazard of censoring.}
 
 \item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.}
+
+\item{model}{a string to indicate which model is fitted.}
 }
 \description{
 A function to calculate the power under pre-specified effect size, variance, and

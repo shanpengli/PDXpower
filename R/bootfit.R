@@ -16,12 +16,13 @@
 ##' @param two.sided Logical value to indicate if a two-sided hypothesis testing is conducted.
 ##' @param lambdaC Rate parameter of exponential distribution for the hazard of censoring.
 ##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.
+##' @param model a string to indicate which model is fitted.
 ##' @export
 ##'
 
 bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
                      nu = 2, sigma2 = 1, distr = c("Weibull", "normal"), two.sided = TRUE,
-                    lambdaC = 0.1, censor = TRUE) {
+                    lambdaC = 0.1, censor = TRUE, model = c("both", "ANOVA", "Cox-frailty")) {
 
   set.seed(100+seed)
   Data <- NULL
@@ -77,6 +78,8 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
     return(c(FALSE, FALSE))
   }
 
+  Remodel1 <- Remodel2 <- NA
+
   Data <- as.data.frame(Data)
   Data <- data.frame(Data, 1)
   colnames(Data)[4] <- "status"
@@ -93,79 +96,222 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
       }
     }
     Data$survtime <- survtime
-    # print(sum(Data$status)/nrow(Data))
-    CoxRandom <- frailtypack::frailtyPenal(survival::Surv(survtime,status) ~ Tx + cluster(ID),
-                                           data=Data, RandDist = "LogN",
-                                           print.times = FALSE, maxit = 50, hazard = "Weibull")
+    censor.rate <- 1 - sum(Data$status)/nrow(Data)
 
-    Data <- Data[Data$status == 1, ]
-    ANCOVArandom <- try(nlme::lme(fixed = log(survtime) ~ Tx, random = ~1|ID, data = Data),
-                        silent = TRUE)
+    if (model == "both") {
+      CoxRandom <- try(frailtypack::frailtyPenal(survival::Surv(survtime,status) ~ Tx + cluster(ID),
+                                                 data=Data, RandDist = "LogN",
+                                                 print.times = FALSE, maxit = 50, hazard = "Weibull"),
+                       silent = TRUE)
+
+      if ('try-error' %in% class(CoxRandom)) {
+        Remodel2 <- NA
+      } else {
+        summodel2 <- summary(CoxRandom)
+      }
+
+      Data <- Data[Data$status == 1, ]
+      ANCOVArandom <- try(nlme::lme(fixed = log(survtime) ~ Tx, random = ~1|ID, data = Data),
+                          silent = TRUE)
 
 
-    if ('try-error' %in% class(ANCOVArandom)) {
-      Remodel1 <- NA
+      if ('try-error' %in% class(ANCOVArandom)) {
+        Remodel1 <- NA
+      } else {
+        summodel1 <- summary(ANCOVArandom)
+      }
+
+    } else if (model == "ANOVA") {
+
+      Data <- Data[Data$status == 1, ]
+      ANCOVArandom <- try(nlme::lme(fixed = log(survtime) ~ Tx, random = ~1|ID, data = Data),
+                          silent = TRUE)
+
+
+      if ('try-error' %in% class(ANCOVArandom)) {
+        Remodel1 <- NA
+      } else {
+        summodel1 <- summary(ANCOVArandom)
+      }
+
+    } else if (model == "Cox-frailty") {
+
+      CoxRandom <- try(frailtypack::frailtyPenal(survival::Surv(survtime,status) ~ Tx + cluster(ID),
+                                                 data=Data, RandDist = "LogN",
+                                                 print.times = FALSE, maxit = 50, hazard = "Weibull"),
+                       silent = TRUE)
+
+      if ('try-error' %in% class(CoxRandom)) {
+        Remodel2 <- NA
+      } else {
+        summodel2 <- summary(CoxRandom)
+      }
+
     } else {
-      summodel1 <- summary(ANCOVArandom)
+      stop("Please choose the one of the following options for modeling: Weibull, normal, and both.")
     }
+
 
   } else {
-    ANCOVArandom <- try(nlme::lme(fixed = log(Y) ~ Tx, random = ~1|ID, data = Data),
-                        silent = TRUE)
 
-    if ('try-error' %in% class(ANCOVArandom)) {
-      Remodel1 <- NA
+    censor.rate <- 0
+
+    if (model == "both") {
+      CoxRandom <- try(frailtypack::frailtyPenal(survival::Surv(Y,status) ~ Tx + cluster(ID),
+                                                 data=Data, RandDist = "LogN",
+                                                 print.times = FALSE, maxit = 50, hazard = "Weibull"),
+                       silent = TRUE)
+
+      if ('try-error' %in% class(CoxRandom)) {
+        Remodel2 <- NA
+      } else {
+        summodel2 <- summary(CoxRandom)
+      }
+
+      ANCOVArandom <- try(nlme::lme(fixed = log(Y) ~ Tx, random = ~1|ID, data = Data),
+                          silent = TRUE)
+
+      if ('try-error' %in% class(ANCOVArandom)) {
+        Remodel1 <- NA
+      } else {
+        summodel1 <- summary(ANCOVArandom)
+      }
+
+    } else if (model == "ANOVA") {
+
+      ANCOVArandom <- try(nlme::lme(fixed = log(Y) ~ Tx, random = ~1|ID, data = Data),
+                          silent = TRUE)
+
+      if ('try-error' %in% class(ANCOVArandom)) {
+        Remodel1 <- NA
+      } else {
+        summodel1 <- summary(ANCOVArandom)
+      }
+
+    } else if (model == "Cox-frailty") {
+
+      CoxRandom <- try(frailtypack::frailtyPenal(survival::Surv(Y,status) ~ Tx + cluster(ID),
+                                                 data=Data, RandDist = "LogN",
+                                                 print.times = FALSE, maxit = 50, hazard = "Weibull"),
+                       silent = TRUE)
+
+      if ('try-error' %in% class(CoxRandom)) {
+        Remodel2 <- NA
+      } else {
+        summodel2 <- summary(CoxRandom)
+      }
+
     } else {
-      summodel1 <- summary(ANCOVArandom)
+      stop("Please choose the one of the following options for modeling: Weibull, normal, and both.")
     }
 
-    CoxRandom <- frailtypack::frailtyPenal(survival::Surv(Y,status) ~ Tx + cluster(ID),
-                                           data=Data, RandDist = "LogN",
-                                           print.times = FALSE, maxit = 50, hazard = "Weibull")
   }
 
+  if (model == "Cox-frailty") {
 
-  if (!'try-error' %in% class(ANCOVArandom)) {
-    if (two.sided) {
-      p2 <- summodel1$tTable[2, 5]
-      if (p2 <= alpha) {
-        Remodel1 <- TRUE
-      } else {
-        Remodel1 <- FALSE
-      }
+    if (CoxRandom$varH == 0) {
+      Remodel2 <- NA
     } else {
-      p2 <- pt(coef(summodel1)[2, 4], coef(summodel1)[2, 3], lower = FALSE)
-      if (p2 <= alpha) {
-        Remodel1 <- TRUE
+      if (two.sided) {
+        p4 <- CoxRandom$beta_p.value[1]
+        if (p4 <= alpha) {
+          Remodel2 <- TRUE
+        } else {
+          Remodel2 <- FALSE
+        }
       } else {
-        Remodel1 <- FALSE
+        p4 <- pnorm(CoxRandom$coef/sqrt(CoxRandom$varH), lower.tail = TRUE)
+        if (p4 <= alpha) {
+          Remodel2 <- TRUE
+        } else {
+          Remodel2 <- FALSE
+        }
       }
     }
-  }
 
+    result <- list(censor.rate = censor.rate, Remodel2 = Remodel2)
 
-  if (CoxRandom$varH == 0) {
-    Remodel2 <- NA
+    return(result)
+
+  } else if (model == "ANOVA") {
+
+    if (!'try-error' %in% class(ANCOVArandom)) {
+      if (two.sided) {
+        p2 <- summodel1$tTable[2, 5]
+        if (!is.nan(p2)) {
+          if (p2 <= alpha) {
+            Remodel1 <- TRUE
+          } else {
+            Remodel1 <- FALSE
+          }
+        } else {
+          Remodel1 <- NA
+        }
+      } else {
+        p2 <- pt(coef(summodel1)[2, 4], coef(summodel1)[2, 3], lower = FALSE)
+        if (p2 <= alpha) {
+          Remodel1 <- TRUE
+        } else {
+          Remodel1 <- FALSE
+        }
+      }
+    }
+
+    result <- list(censor.rate = censor.rate, Remodel1 = Remodel1)
+
+    return(result)
+
   } else {
-    if (two.sided) {
-      p4 <- CoxRandom$beta_p.value[1]
-      if (p4 <= alpha) {
-        Remodel2 <- TRUE
+
+    if (!'try-error' %in% class(ANCOVArandom)) {
+      if (two.sided) {
+        p2 <- summodel1$tTable[2, 5]
+        if (!is.nan(p2)) {
+          if (p2 <= alpha) {
+            Remodel1 <- TRUE
+          } else {
+            Remodel1 <- FALSE
+          }
+        } else {
+          Remodel1 <- NA
+        }
+
       } else {
-        Remodel2 <- FALSE
-      }
-    } else {
-      p4 <- pnorm(CoxRandom$coef/sqrt(CoxRandom$varH), lower.tail = TRUE)
-      if (p4 <= alpha) {
-        Remodel2 <- TRUE
-      } else {
-        Remodel2 <- FALSE
+        p2 <- pt(coef(summodel1)[2, 4], coef(summodel1)[2, 3], lower = FALSE)
+        if (p2 <= alpha) {
+          Remodel1 <- TRUE
+        } else {
+          Remodel1 <- FALSE
+        }
       }
     }
+
+    if (CoxRandom$varH == 0) {
+      Remodel2 <- NA
+    } else {
+      if (two.sided) {
+        p4 <- CoxRandom$beta_p.value[1]
+        if (p4 <= alpha) {
+          Remodel2 <- TRUE
+        } else {
+          Remodel2 <- FALSE
+        }
+      } else {
+        p4 <- pnorm(CoxRandom$coef/sqrt(CoxRandom$varH), lower.tail = TRUE)
+        if (p4 <= alpha) {
+          Remodel2 <- TRUE
+        } else {
+          Remodel2 <- FALSE
+        }
+      }
+    }
+
+    result <- list(censor.rate = censor.rate, Remodel1 = Remodel1, Remodel2 = Remodel2)
+    return(result)
+
   }
 
-  HyTest <- c(Remodel1, Remodel2)
-  return(HyTest)
+
 }
 
 

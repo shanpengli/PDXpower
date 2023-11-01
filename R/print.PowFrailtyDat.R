@@ -20,7 +20,9 @@ print.PowFrailtyDat <- function(x, digits = 4, ...) {
   cat("Scale parameter (lambda):", round(x$lambda, digits), "\n")
   cat("Shape parameter (nu):", round(x$nu, digits), "\n")
   cat("Treatment effect (beta):", round(x$beta, digits), "\n")
-  cat("Variance of random effect (alpha):", round(x$tau2, digits), "\n")
+  cat("Variance of random effect (tau2):", round(x$tau2, digits), "\n")
+  cat("The above parameters are used for Monte Carlo data generation from a Cox frailty model.\n")
+  cat("Power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated based on the proportion of rejecting the null hypothesis beta = 0.\n")
   print(x$PowTab)
 
 }
