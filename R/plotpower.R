@@ -1,11 +1,12 @@
 ##' @title A function to generate a four-panel power curve under specified
 ##' number of PDX lines and number of individuals per PDX lines per treatment
-##' @param object of class 'PowerTable'.
-##' @param ylim The limit of y axis.
+##' @param object object of class 'PowerTable'.
+##' @param ylim limit of y axis.
+##' @param n.breaks number of breaks of the x axis. Default is NULL.
 ##' @export
 ##'
 
-plotpower <- function(object, ylim = c(0, 0.1)) {
+plotpower <- function(object, ylim = c(0, 0.1), n.breaks = NULL) {
 
   if (!inherits(object, "PowerTable"))
     stop("Use only with 'PowerTable' objects.\n")
@@ -28,8 +29,9 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
       ggplot2::geom_line() +
       ggplot2::ylab("Power for ANOVA") +
       ggplot2::xlab("Number of PDX lines") +
-      ylim(ylim) +
-      theme_bw()
+      ggplot2::ylim(ylim) +
+      ggplot2::theme_bw() +
+      ggplot2::scale_x_continuous(n.breaks = n.breaks)
 
     p4 <- ggplot2::ggplot(object,
                           ggplot2::aes(x = `PDOX lines`, y = Coxrandom,
@@ -38,8 +40,9 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
       ggplot2::geom_line() +
       ggplot2::ylab("Power for Cox frailty") +
       ggplot2::xlab("Number of PDX lines") +
-      ylim(ylim) +
-      theme_bw()
+      ggplot2::ylim(ylim) +
+      ggplot2::theme_bw() +
+      ggplot2::scale_x_continuous(n.breaks = n.breaks)
 
     ggpubr::ggarrange(p2, p4, ncol = 2, nrow = 1, common.legend = TRUE,
                       legend = "right")
@@ -59,8 +62,9 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
       ggplot2::geom_line() +
       ggplot2::ylab("Power for ANOVA") +
       ggplot2::xlab("Number of PDX lines") +
-      ylim(ylim) +
-      theme_bw()
+      ggplot2::ylim(ylim) +
+      ggplot2::theme_bw() +
+      ggplot2::scale_x_continuous(n.breaks = n.breaks)
 
   } else if (print == "Cox-frailty") {
 
@@ -78,8 +82,9 @@ plotpower <- function(object, ylim = c(0, 0.1)) {
       ggplot2::geom_line() +
       ggplot2::ylab("Power for Cox frailty") +
       ggplot2::xlab("Number of PDX lines") +
-      ylim(ylim) +
-      theme_bw()
+      ggplot2::ylim(ylim) +
+      ggplot2::theme_bw() +
+      ggplot2::scale_x_continuous(n.breaks = n.breaks)
   } else {
 
     stop("Please choose one of the following options for printing: both, ANOVA, Cox-frailty.")

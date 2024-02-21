@@ -12,6 +12,7 @@
 ##' @param nu Shape parameter of Weibull distribution for the baseline hazard.
 ##' @param sigma2 Error variance of log survival time for both treatment groups.
 ##' @param distr distributional assumption of survival time.
+##' @param two.sided a logical value to indicate if a two-sided test is performed. Default is TRUE.
 ##' @param lambdaC Scale parameter of exponential distribution for the hazard of censoring.
 ##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.
 ##' @export

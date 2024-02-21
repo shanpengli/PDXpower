@@ -1,5 +1,6 @@
 ##' @title A function to obtain a power table with the combination of
 ##' various number of PDX lines and number of individuals per PDX lines per treatment based on a prior knowledge of median survival
+##' @aliases PowFrailty
 ##' @param ctl.med.surv a numeric value of the hypothesized medial survival in the control arm. Default is 2.4.
 ##' @param tx.med.surv a numeric value of the hypothesized medial survival in the treatment arm. Default is 4.8.
 ##' @param nu shape parameter of Weibull distribution for the baseline hazard. Default is 1, i.e., constant failure rate.
@@ -11,12 +12,13 @@
 ##' @param two.sided A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param ncores number of cores for parallel computation.
 ##' @examples
+##' \dontrun{
 ##' require(PDXpower)
 ##' PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100,
 ##' n = c(3, 5, 10), m = c(2, 3, 4))
 ##' PowTab
 ##' plotpower(PowTab, ylim = c(0, 1))
-##'
+##' }
 ##' @export
 ##'
 

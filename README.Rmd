@@ -29,25 +29,46 @@ devtools::install_github("shanpengli/PDXpower")
 
 ## Example
 
-Below is a toy example how to conduct power analysis based on a preliminary dataset using the `PowFrailtyDat` function. Particularly, we need to specify a formula that fits a Cox Frailty model with correlating variables in `data`, where `Y` is the event time variable, `status` is the event indicator, `Tx` is the treatment variable, and `ID` is the PDX line variable.
+Below is a toy example how to conduct power analysis based on a preliminary dataset `mice`. Particularly, we need to specify a formula that fits a Cox Frailty model with correlating variables in `mice`, where `Y` is the event time variable, `status` is the event indicator, `Tx` is the treatment variable, and `ID` is the PDX line ID.
 
 ```{r, eval=TRUE}
 library(PDXpower)
-## simulate a dataset with a Weibull event outcome as a preliminary dataset
-data <- SimPDXdata(seed = 1000, n = 3, m = 3, beta = -0.8, tau2 = 0.2, lambda = 0.03,
-nu = 2, sigma2 = 1, distr = "Weibull", lambdaC = 0.1, censor = TRUE)
-
-PowTab <- PowFrailtyDat(data = data, formula = Surv(Y,status) ~ Tx + cluster(ID),
-n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
+data(mice)
+### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
+PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y, status) ~ Tx + cluster(ID), 
+                        n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 PowTab
-plotpower(PowTab, ylim = c(0, 1))
 ```
 
-Alternatively, we may also conduct power analysis based on median survival of two randomized arms using the `PowFrailty` function. We suppose that the median survival of the control and treatment arm is 2.4 and 4.8, allowing a PDX line has 10% marginal error (`tau2=0.1`) of treatment effect and an exponential event time, a power analysis may be done as below
+The following code generates a power curve based on the object `PowTab`.
+```{r}
+plotpower(PowTab[[5]])
+```
+
+Alternatively, we may also conduct power analysis based on ANOVA mixed effects model.
+```{r}
+### Power analysis on a preliminary dataset by assuming the time to event is log-normal
+PowTab <- PowANOVADat(data = mice, formula = log(Y) ~ Tx, 
+                      random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
+PowTab
+plotpower(PowTab[[4]])
+```
+
+Alternatively, we may also conduct power analysis based on median survival of two randomized arms. We suppose that the median survival of the control and treatment arm is 2.4 and 4.8, allowing a PDX line has 10% marginal error (`tau2=0.1`) of treatment effect and an exponential event time, a power analysis may be done as below:
 ```{r, eval=TRUE}
-library(PDXpower)
-PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100, nu = 1, tau2 = 0.1,
-n = c(3, 5, 10), m = c(2, 3, 4))
+### Assume the time to event outcome is weibull-distributed
+PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, sim = 100,
+                     n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
-plotpower(PowTab, ylim = c(0, 1))
 ```
+
+
+```{r}
+### Assume the time to event outcome is log-normal
+PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = 0.1, sigma2 = 1, sim = 100,
+                   n = c(3, 5, 10), m = c(2, 3, 4))
+PowTab
+```
+
+
+

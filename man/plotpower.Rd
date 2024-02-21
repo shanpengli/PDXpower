@@ -5,12 +5,14 @@
 \title{A function to generate a four-panel power curve under specified
 number of PDX lines and number of individuals per PDX lines per treatment}
 \usage{
-plotpower(object, ylim = c(0, 0.1))
+plotpower(object, ylim = c(0, 0.1), n.breaks = NULL)
 }
 \arguments{
-\item{object}{of class 'PowerTable'.}
+\item{object}{object of class 'PowerTable'.}
 
-\item{ylim}{The limit of y axis.}
+\item{ylim}{limit of y axis.}
+
+\item{n.breaks}{number of breaks of the x axis. Default is NULL.}
 }
 \description{
 A function to generate a four-panel power curve under specified

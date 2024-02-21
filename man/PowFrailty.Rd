@@ -44,10 +44,11 @@ A function to obtain a power table with the combination of
 various number of PDX lines and number of individuals per PDX lines per treatment based on a prior knowledge of median survival
 }
 \examples{
+\dontrun{
 require(PDXpower)
 PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100,
 n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
 plotpower(PowTab, ylim = c(0, 1))
-
+}
 }

@@ -1,13 +1,18 @@
 Package: PDXpower
 Type: Package
-Title: A Package to Calculate the Power for Experimental Designs of Preclinical Experiments: Number of PDX Lines Versus Subsampling Within PDX Lines by Fitting ANCOVA Fixed Effects Model, ANCOVA Random Effects Model, Cox Model, and Fraity Model
-Version: 0.1.0
+Title: A Power Analysis Tool for Time to Event Outcome in Experimental Designs of Preclinical Studies
+Version: 1.0.0
 Author: Shanpeng Li
 Maintainer: Shanpeng Li <lishanpeng0913@ucla.edu>
-Description: Power calculation for 
+Description: This is a R package to conduct simulation-based power calculation 
+             for clustered time to event data in a mixed crossed/nested design, 
+             where a number of cell lines and a number of mice within each cell line are considered to achieve a desired statistical power.
+             This package provides two commonly used models for powering a design, ANOVA mixed effects and Cox frailty model. Both models account for
+             within-subject (cell line) correlation while holding different distributional assumptions about the outcome.
 License: GPL (>= 2)
 Encoding: UTF-8
-Depends: R (>= 3.5.0),nlme,frailtypack,survival,ggplot2,ggpubr,stats
+Depends: R (>= 3.5.0),survival,stats,parallel
+Imports: nlme,frailtypack,ggplot2,ggpubr
 LazyData: true
 RoxygenNote: 7.2.3
 Suggests: 

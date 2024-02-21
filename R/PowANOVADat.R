@@ -1,5 +1,6 @@
 ##' @title A function to obtain a power table with the combination of
 ##' various number of PDX lines and number of individuals per PDX lines per treatment based on a preliminary dataset
+##' @aliases PowANOVADat
 ##' @param data data.frame in which to interpret the variables named in the formula.
 ##' @param formula a two-sided linear formula object describing the fixed-effects part of the model,
 ##' with the response on the left of a ~ operator and the terms, separated by + operators, on the right.
@@ -10,14 +11,14 @@
 ##' @param two.sided A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param ncores number of cores for parallel computation.
 ##' @examples
+##' \dontrun{
 ##' require(PDXpower)
-##' data(mice)
-##'
+##' data(mice2)
 ##'PowTab <- PowANOVADat(data = mice, formula = log(Y) ~ Tx, random = ~ 1|ID,
 ##'n = c(3, 5, 10), m = c(2, 3, 4))
 ##'PowTab
 ##'plotpower(PowTab[[4]], ylim = c(0, 1))
-##'
+##' }
 ##' @export
 
 PowANOVADat <- function(data = NULL, formula = NULL, random = NULL,

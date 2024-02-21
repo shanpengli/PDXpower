@@ -8,7 +8,7 @@
 ##' @param m an integer number to specify the number of individuals per PDX line per treatment.
 ##' @param beta Treatment effect for the treated group.
 ##' @param tau2 Error variance of random effect.
-##' @param alpha Signifiance level. Default is 0.05.
+##' @param alpha Significance level. Default is 0.05.
 ##' @param lambda Scale parameter of Weibull distribution for the baseline hazard.
 ##' @param nu Shape parameter of Weibull distribution for the baseline hazard.
 ##' @param sigma2 Error variance of log survival time for both treatment groups.
@@ -106,8 +106,6 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
 
       if ('try-error' %in% class(CoxRandom)) {
         Remodel2 <- NA
-      } else {
-        summodel2 <- summary(CoxRandom)
       }
 
       Data <- Data[Data$status == 1, ]
@@ -143,8 +141,6 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
 
       if ('try-error' %in% class(CoxRandom)) {
         Remodel2 <- NA
-      } else {
-        summodel2 <- summary(CoxRandom)
       }
 
     } else {
@@ -164,8 +160,6 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
 
       if ('try-error' %in% class(CoxRandom)) {
         Remodel2 <- NA
-      } else {
-        summodel2 <- summary(CoxRandom)
       }
 
       ANCOVArandom <- try(nlme::lme(fixed = log(Y) ~ Tx, random = ~1|ID, data = Data),
@@ -197,8 +191,6 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
 
       if ('try-error' %in% class(CoxRandom)) {
         Remodel2 <- NA
-      } else {
-        summodel2 <- summary(CoxRandom)
       }
 
     } else {
@@ -209,7 +201,7 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
 
   if (model == "Cox-frailty") {
 
-    if (CoxRandom$varH == 0) {
+    if ('try-error' %in% class(CoxRandom) | CoxRandom$varH == 0) {
       Remodel2 <- NA
     } else {
       if (two.sided) {
@@ -248,7 +240,7 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
           Remodel1 <- NA
         }
       } else {
-        p2 <- pt(coef(summodel1)[2, 4], coef(summodel1)[2, 3], lower = FALSE)
+        p2 <- pt(coef(summodel1)[2, 4], coef(summodel1)[2, 3], lower.tail = FALSE)
         if (p2 <= alpha) {
           Remodel1 <- TRUE
         } else {
@@ -277,7 +269,7 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
         }
 
       } else {
-        p2 <- pt(coef(summodel1)[2, 4], coef(summodel1)[2, 3], lower = FALSE)
+        p2 <- pt(coef(summodel1)[2, 4], coef(summodel1)[2, 3], lower.tail = FALSE)
         if (p2 <= alpha) {
           Remodel1 <- TRUE
         } else {
@@ -286,7 +278,7 @@ bootfit <- function(seed = 1000, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
       }
     }
 
-    if (CoxRandom$varH == 0) {
+    if ('try-error' %in% class(CoxRandom) | CoxRandom$varH == 0) {
       Remodel2 <- NA
     } else {
       if (two.sided) {

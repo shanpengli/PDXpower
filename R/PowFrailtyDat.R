@@ -1,5 +1,6 @@
 ##' @title A function to obtain a power table with the combination of
 ##' various number of PDX lines and number of individuals per PDX lines per treatment based on a preliminary dataset
+##' @aliases PowFrailtyDat
 ##' @param data data.frame in which to interpret the variables named in the formula.
 ##' @param formula a formula object, with the response on the left of a ~ operator, and the terms on the right.
 ##' The response must be a survival object as returned by the Surv function.
@@ -12,13 +13,14 @@
 ##' @param two.sided A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param ncores number of cores for parallel computation.
 ##' @examples
+##' \dontrun{
 ##' require(PDXpower)
 ##' data(mice)
-##'
-##'PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y,status) ~ Tx + cluster(ID),
-##'n = c(3, 5, 10), m = c(2, 3, 4))
-##'PowTab
-##'plotpower(PowTab[[5]], ylim = c(0, 1))
+##' PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y,status) ~ Tx + cluster(ID),
+##' n = c(3, 5, 10), m = c(2, 3, 4))
+##' PowTab
+##' plotpower(PowTab[[5]], ylim = c(0, 1))
+##' }
 ##'
 ##' @export
 

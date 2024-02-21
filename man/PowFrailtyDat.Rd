@@ -45,12 +45,13 @@ A function to obtain a power table with the combination of
 various number of PDX lines and number of individuals per PDX lines per treatment based on a preliminary dataset
 }
 \examples{
+\dontrun{
 require(PDXpower)
 data(mice)
-
 PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y,status) ~ Tx + cluster(ID),
 n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
 plotpower(PowTab[[5]], ylim = c(0, 1))
+}
 
 }

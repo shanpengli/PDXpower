@@ -40,6 +40,8 @@ SimPDXdata(
 
 \item{distr}{distributional assumption of survival time.}
 
+\item{two.sided}{a logical value to indicate if a two-sided test is performed. Default is TRUE.}
+
 \item{lambdaC}{Scale parameter of exponential distribution for the hazard of censoring.}
 
 \item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.}

@@ -1,5 +1,6 @@
 ##' @title A function to obtain a power table with the combination of
 ##' various number of PDX lines and number of individuals per PDX lines per treatment.
+##' @aliases PowerTable
 ##' @param n an integer number to specify the number of PDX lines.
 ##' @param m an integer number to specify the number of individuals per PDX line per treatment.
 ##' @param beta Treatment effect for the treated group.
@@ -33,16 +34,16 @@
 ##' beta <- CoxRandom$coef
 ##' tau2 <- CoxRandom$sigma2
 ##'
+##'\dontrun{
 ##' n <- c(3, 5, 10)
 ##' m <- c(2, 3, 4)
 ##' fit <- PowerTable(n = n, m = m, beta = beta, lambda = lambda, nu = nu,
 ##'                   tau2 = tau2, distr = "Weibull", sim = 100,
 ##'                   censor = FALSE,
-##'                   print = "both",
-##'                   ncores = 7)
+##'                   print = "both")
 ##'
 ##' plotpower(fit, ylim = c(0.5, 1))
-##'
+##'}
 ##' @seealso \code{\link{plotpower}}
 ##' @export
 ##'

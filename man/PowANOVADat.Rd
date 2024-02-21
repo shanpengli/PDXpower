@@ -39,12 +39,12 @@ A function to obtain a power table with the combination of
 various number of PDX lines and number of individuals per PDX lines per treatment based on a preliminary dataset
 }
 \examples{
+\dontrun{
 require(PDXpower)
-data(mice)
-
+data(mice2)
 PowTab <- PowANOVADat(data = mice, formula = log(Y) ~ Tx, random = ~ 1|ID,
 n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
 plotpower(PowTab[[4]], ylim = c(0, 1))
-
+}
 }

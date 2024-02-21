@@ -24,6 +24,8 @@ PowANOVA(
 
 \item{tau2}{variance of PDOX line specific random effect. Default is 0.1.}
 
+\item{sigma2}{variance of random error.}
+
 \item{n}{an integer number to specify the number of PDX lines.}
 
 \item{m}{an integer number to specify the number of individuals per PDX line per treatment.}
@@ -33,20 +35,17 @@ PowANOVA(
 \item{two.sided}{A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
 
 \item{ncores}{number of cores for parallel computation.}
-
-\item{nu}{shape parameter of Weibull distribution for the baseline hazard. Default is 1, i.e., constant failure rate.}
-
-\item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is FALSE.}
 }
 \description{
 A function to obtain a power table with the combination of
 various number of PDX lines and number of individuals per PDX lines per treatment based on a prior knowledge of median survival
 }
 \examples{
+\dontrun{
 require(PDXpower)
-PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100,
+PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 5,
 n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
 plotpower(PowTab, ylim = c(0, 1))
-
+}
 }

@@ -76,16 +76,16 @@ nu <- CoxRandom$shape.weib[1]
 beta <- CoxRandom$coef
 tau2 <- CoxRandom$sigma2
 
+\dontrun{
 n <- c(3, 5, 10)
 m <- c(2, 3, 4)
 fit <- PowerTable(n = n, m = m, beta = beta, lambda = lambda, nu = nu,
                   tau2 = tau2, distr = "Weibull", sim = 100,
                   censor = FALSE,
-                  print = "both",
-                  ncores = 7)
+                  print = "both")
 
 plotpower(fit, ylim = c(0.5, 1))
-
+}
 }
 \seealso{
 \code{\link{plotpower}}
