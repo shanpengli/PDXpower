@@ -2,6 +2,7 @@ Package: PDXpower
 Type: Package
 Title: A Power Analysis Tool for Time to Event Outcome in Experimental Designs of Preclinical Studies
 Version: 1.0.0
+Date: 2024-02-21
 Author: Shanpeng Li
 Maintainer: Shanpeng Li <lishanpeng0913@ucla.edu>
 Description: This is a R package to conduct simulation-based power calculation 
