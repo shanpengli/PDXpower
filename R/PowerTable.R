@@ -4,7 +4,7 @@
 ##' @param n an integer number to specify the number of PDX lines.
 ##' @param m an integer number to specify the number of individuals per PDX line per treatment.
 ##' @param beta Treatment effect for the treated group.
-##' @param tau2 variance of PDOX line specific random effect.
+##' @param tau2 variance of PDX line specific random effect.
 ##' @param alpha significance level. Default is 0.05.
 ##' @param lambda Scale parameter of Weibull distribution for the baseline hazard.
 ##' @param nu Shape parameter of Weibull distribution for the baseline hazard.
@@ -14,7 +14,7 @@
 ##' @param sim Number of Monte Carlo samples to be generated. Default is 1000.
 ##' @param distr Distributional assumption of the simulated event time.
 ##' @param lambdaC Rate parameter of exponential distribution for the hazard of censoring.
-##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.
+##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.
 ##' @param print a string to indicate which model result to be printed.
 ##' If \code{print = "both"}, then the power curves of both models will be printed.
 ##' Otherwise, print a power curve from one of the two models by specifying

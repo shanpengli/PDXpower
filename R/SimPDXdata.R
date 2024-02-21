@@ -1,8 +1,8 @@
 ##' A function to calculate the power under pre-specified effect size, variance, and
 ##' correlation using Monte Carlo sampling scheme
 ##' @title A function to calculate the power under pre-specified effect size,
-##' variance, and correlation using Monte Carlo sampling scheme by fitting ANCOVA fixed effects model,
-##' ANCOVA random effects model, Cox model, and frailty model.
+##' variance, and correlation using Monte Carlo sampling scheme by fitting ANOVA fixed effects model,
+##' ANOVA random effects model, Cox model, and frailty model.
 ##' @param seed  an integer random seed number.
 ##' @param n an integer number to specify the number of PDX lines.
 ##' @param m an integer number to specify the number of individuals per PDX line per treatment.
@@ -14,7 +14,7 @@
 ##' @param distr distributional assumption of survival time.
 ##' @param two.sided a logical value to indicate if a two-sided test is performed. Default is TRUE.
 ##' @param lambdaC Scale parameter of exponential distribution for the hazard of censoring.
-##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.
+##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.
 ##' @export
 ##'
 

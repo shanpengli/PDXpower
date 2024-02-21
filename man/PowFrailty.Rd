@@ -25,7 +25,7 @@ PowFrailty(
 
 \item{nu}{shape parameter of Weibull distribution for the baseline hazard. Default is 1, i.e., constant failure rate.}
 
-\item{tau2}{variance of PDOX line specific random effect. Default is 0.1.}
+\item{tau2}{variance of PDX line specific random effect. Default is 0.1.}
 
 \item{n}{an integer number to specify the number of PDX lines.}
 

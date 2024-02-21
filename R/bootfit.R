@@ -2,7 +2,7 @@
 ##' correlation using Monte Carlo sampling scheme
 ##' @title A function to calculate the power under pre-specified effect size,
 ##' variance, and correlation using Monte Carlo sampling scheme by fitting ANCOVA fixed effects model,
-##' ANCOVA random effects model, Cox model, and frailty model.
+##' ANOVA random effects model, Cox model, and frailty model.
 ##' @param seed  an integer random seed number.
 ##' @param n an integer number to specify the number of PDX lines.
 ##' @param m an integer number to specify the number of individuals per PDX line per treatment.

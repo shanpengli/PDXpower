@@ -22,7 +22,7 @@ PowANOVA(
 
 \item{tx.med.surv}{a numeric value of the hypothesized medial survival in the treatment arm. Default is 4.8.}
 
-\item{tau2}{variance of PDOX line specific random effect. Default is 0.1.}
+\item{tau2}{variance of PDX line specific random effect. Default is 0.1.}
 
 \item{sigma2}{variance of random error.}
 

@@ -3,7 +3,7 @@
 ##' @aliases PowANOVA
 ##' @param ctl.med.surv a numeric value of the hypothesized medial survival in the control arm. Default is 2.4.
 ##' @param tx.med.surv a numeric value of the hypothesized medial survival in the treatment arm. Default is 4.8.
-##' @param tau2 variance of PDOX line specific random effect. Default is 0.1.
+##' @param tau2 variance of PDX line specific random effect. Default is 0.1.
 ##' @param sigma2 variance of random error.
 ##' @param n an integer number to specify the number of PDX lines.
 ##' @param m an integer number to specify the number of individuals per PDX line per treatment.

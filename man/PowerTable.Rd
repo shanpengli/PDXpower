@@ -30,7 +30,7 @@ PowerTable(
 
 \item{beta}{Treatment effect for the treated group.}
 
-\item{tau2}{variance of PDOX line specific random effect.}
+\item{tau2}{variance of PDX line specific random effect.}
 
 \item{alpha}{significance level. Default is 0.05.}
 
@@ -47,7 +47,7 @@ Default is TRUE.}
 
 \item{lambdaC}{Rate parameter of exponential distribution for the hazard of censoring.}
 
-\item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.}
+\item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.}
 
 \item{sim}{Number of Monte Carlo samples to be generated. Default is 1000.}
 

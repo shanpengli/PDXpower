@@ -13,11 +13,9 @@ License: GPL (>= 2)
 Encoding: UTF-8
 Depends: R (>= 3.5.0),survival,stats,parallel
 Imports: nlme,frailtypack,ggplot2,ggpubr
-LazyData: true
 RoxygenNote: 7.2.3
 Suggests: 
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
-VignetteBuilder: knitr
-Config/testthat/edition: 3
+    testthat (>= 3.0.0),
+    spelling
+Language: en-US
+LazyData: true

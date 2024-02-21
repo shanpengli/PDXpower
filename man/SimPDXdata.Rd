@@ -3,8 +3,8 @@
 \name{SimPDXdata}
 \alias{SimPDXdata}
 \title{A function to calculate the power under pre-specified effect size,
-variance, and correlation using Monte Carlo sampling scheme by fitting ANCOVA fixed effects model,
-ANCOVA random effects model, Cox model, and frailty model.}
+variance, and correlation using Monte Carlo sampling scheme by fitting ANOVA fixed effects model,
+ANOVA random effects model, Cox model, and frailty model.}
 \usage{
 SimPDXdata(
   seed = 1000,
@@ -44,7 +44,7 @@ SimPDXdata(
 
 \item{lambdaC}{Scale parameter of exponential distribution for the hazard of censoring.}
 
-\item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Deafult is TRUE.}
+\item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.}
 }
 \description{
 A function to calculate the power under pre-specified effect size, variance, and
