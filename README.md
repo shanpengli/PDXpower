@@ -28,6 +28,7 @@ where `Y` is the event time variable, `status` is the event indicator,
 ``` r
 library(PDXpower)
 #> Loading required package: survival
+#> Loading required package: parallel
 data(mice)
 ### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
 PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y, status) ~ Tx + cluster(ID), 
@@ -73,16 +74,16 @@ effects model.
 
 ``` r
 ### Power analysis on a preliminary dataset by assuming the time to event is log-normal
-PowTab <- PowANOVADat(data = mice, formula = log(Y) ~ Tx, 
+PowTab <- PowANOVADat(data = mice2, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 PowTab
 #> Power analysis based on pilot data
 #> 
 #> An ANOVA mixed effects model was fitted
 #> Summary of parameter estimates from the data:
-#> Treatment effect (beta): 0.5135 
+#> Treatment effect (beta): 0.1265 
 #> Variance of random effect (tau2): 0 
-#> Random error variance (sigma2): 0.422 
+#> Random error variance (sigma2): 0.4594 
 #> The above parameters are used for Monte Carlo data generation from a ANOVA mixed effects model.
 #> Power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated based on the proportion of rejecting the null hypothesis beta = 0.
 #> 
@@ -90,17 +91,17 @@ PowTab
 #>  PowerTable(n = n, m = m, beta = beta, tau2 = tau2, sigma2 = sigma2, two.sided = two.sided, distr = "normal", censor = FALSE, sim = sim, print = "ANOVA", ncores = ncores) 
 #> 
 #>    n m Power (%)
-#> 1  3 2        25
-#> 2  3 3        36
-#> 3  3 4        49
-#> 4  5 2        38
-#> 5  5 3        52
-#> 6  5 4        70
-#> 7 10 2        69
-#> 8 10 3        84
-#> 9 10 4        97
+#> 1  3 2         7
+#> 2  3 3         4
+#> 3  3 4         7
+#> 4  5 2         5
+#> 5  5 3         5
+#> 6  5 4         9
+#> 7 10 2         6
+#> 8 10 3         7
+#> 9 10 4        11
 plotpower(PowTab[[4]])
-#> Warning: Removed 9 rows containing missing values (`geom_line()`).
+#> Warning: Removed 1 row containing missing values (`geom_line()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />

@@ -48,7 +48,7 @@ plotpower(PowTab[[5]])
 Alternatively, we may also conduct power analysis based on ANOVA mixed effects model.
 ```{r}
 ### Power analysis on a preliminary dataset by assuming the time to event is log-normal
-PowTab <- PowANOVADat(data = mice, formula = log(Y) ~ Tx, 
+PowTab <- PowANOVADat(data = mice2, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 PowTab
 plotpower(PowTab[[4]])
