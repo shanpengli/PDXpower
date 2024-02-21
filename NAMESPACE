@@ -13,7 +13,6 @@ export(bootfit)
 export(plotpower)
 export(simfit)
 
-
 importFrom(nlme, lme)
 importFrom("frailtypack", "frailtyPenal")
 importFrom("survival", "Surv", "cluster")

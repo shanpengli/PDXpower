@@ -1,7 +1,7 @@
 ##' A function to calculate the power under pre-specified effect size, variance, and
 ##' correlation using Monte Carlo sampling scheme by calling multi-core parallel computing
 ##' @title A function to calculate the power under pre-specified effect size,
-##' variance, and correlation using Monte Carlo sampling scheme by fitting ANCOVA fixed effects model,
+##' variance, and correlation using Monte Carlo sampling scheme by fitting ANOVA fixed effects model,
 ##' ANOVA random effects model, Cox model, and frailty model.
 ##' @param sim  total number of Monte Carlo replicates in a simulation.
 ##' @param n an integer number to specify the number of PDX lines.
