@@ -20,91 +20,157 @@ devtools::install_github("shanpengli/PDXpower")
 ## Example
 
 Below is a toy example how to conduct power analysis based on a
-preliminary dataset `mice`. Particularly, we need to specify a formula
-that fits a Cox Frailty model with correlating variables in `mice`,
-where `Y` is the event time variable, `status` is the event indicator,
-`Tx` is the treatment variable, and `ID` is the PDX line ID.
+preliminary dataset `mice1`. Particularly, we need to specify a formula
+that fits a ANOVA mixed effects model with correlating variables in
+`mice1`, where `ID` is the PDX line number, `Y` is the event time
+variable, and `Tx` is the treatment variable.
+
+Next, run power analysis by fitting a ANOVA mixed effects model on
+`mice1`.
 
 ``` r
 library(PDXpower)
 #> Loading required package: survival
 #> Loading required package: parallel
-data(mice)
-### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
-PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y, status) ~ Tx + cluster(ID), 
-                        n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
-PowTab
-#> Power analysis based on pilot data
-#> 
-#> A Cox frailty model was fitted
-#> Summary of parameter estimates from the data:
-#> Scale parameter (lambda): 0.0154 
-#> Shape parameter (nu): 2.1722 
-#> Treatment effect (beta): -0.8794 
-#> Variance of random effect (tau2): 0.0422 
-#> The above parameters are used for Monte Carlo data generation from a Cox frailty model.
-#> Power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated based on the proportion of rejecting the null hypothesis beta = 0.
-#> 
-#> Call:
-#>  PowerTable(n = n, m = m, beta = beta, tau2 = tau2, lambda = lambda, nu = nu, two.sided = two.sided, distr = hazard, censor = censor, sim = sim, print = "Cox-frailty", ncores = ncores) 
-#> 
-#>    n m Power (%) Censoring Rate
-#> 1  3 2     46.67              0
-#> 2  3 3     55.43              0
-#> 3  3 4     61.96              0
-#> 4  5 2     61.90              0
-#> 5  5 3     75.27              0
-#> 6  5 4     82.98              0
-#> 7 10 2     83.02              0
-#> 8 10 3     94.79              0
-#> 9 10 4     97.98              0
-```
-
-The following code generates a power curve based on the object `PowTab`.
-
-``` r
-plotpower(PowTab[[5]])
-#> Warning: Removed 9 rows containing missing values (`geom_line()`).
-```
-
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
-
-Alternatively, we may also conduct power analysis based on ANOVA mixed
-effects model.
-
-``` r
+data(mice1)
 ### Power analysis on a preliminary dataset by assuming the time to event is log-normal
-PowTab <- PowANOVADat(data = mice2, formula = log(Y) ~ Tx, 
+PowTab <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 PowTab
 #> Power analysis based on pilot data
 #> 
 #> An ANOVA mixed effects model was fitted
-#> Summary of parameter estimates from the data:
-#> Treatment effect (beta): 0.1265 
+#> Summary of parameter estimates from the pilot data:
+#> Treatment effect (beta): -0.5569 
 #> Variance of random effect (tau2): 0 
-#> Random error variance (sigma2): 0.4594 
-#> The above parameters are used for Monte Carlo data generation from a ANOVA mixed effects model.
-#> Power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated based on the proportion of rejecting the null hypothesis beta = 0.
-#> 
-#> Call:
-#>  PowerTable(n = n, m = m, beta = beta, tau2 = tau2, sigma2 = sigma2, two.sided = two.sided, distr = "normal", censor = FALSE, sim = sim, print = "ANOVA", ncores = ncores) 
+#> Random error variance (sigma2): 0.2554 
+#> The above parameter estimates are used as priori for Monte Carlo data generation from a ANOVA mixed effects model to estimate the power.
+#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
+#> The summary of power across all possible combinations of n and m is shown below.
 #> 
 #>    n m Power (%)
-#> 1  3 2         7
-#> 2  3 3         4
-#> 3  3 4         7
-#> 4  5 2         5
-#> 5  5 3         5
-#> 6  5 4         9
-#> 7 10 2         6
-#> 8 10 3         7
-#> 9 10 4        11
-plotpower(PowTab[[4]])
-#> Warning: Removed 1 row containing missing values (`geom_line()`).
+#> 1  3 2        37
+#> 2  3 3        56
+#> 3  3 4        85
+#> 4  5 2        67
+#> 5  5 3        81
+#> 6  5 4        97
+#> 7 10 2        93
+#> 8 10 3        99
+#> 9 10 4       100
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+The following code generates a power curve based on the object `PowTab`.
+
+``` r
+plotpower(PowTab[[4]], ylim = c(0, 1))
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+Or we can fit a ANOVA fixed effect model for running power analysis.
+
+``` r
+PowTabfit <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, 
+                      random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
+PowTabfit
+#> Power analysis based on pilot data
+#> 
+#> An ANOVA mixed effects model was fitted
+#> Summary of parameter estimates from the pilot data:
+#> Treatment effect (beta): -0.5569 
+#> Variance of random effect (tau2): 0 
+#> Random error variance (sigma2): 0.2554 
+#> The above parameter estimates are used as priori for Monte Carlo data generation from a ANOVA mixed effects model to estimate the power.
+#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
+#> The summary of power across all possible combinations of n and m is shown below.
+#> 
+#>    n m Power (%) for mixed effects Power (%) for fixed effects
+#> 1  3 2                          NA                          16
+#> 2  3 3                          NA                          20
+#> 3  3 4                          NA                          27
+#> 4  5 2                          NA                          23
+#> 5  5 3                          NA                          31
+#> 6  5 4                          NA                          42
+#> 7 10 2                          NA                          46
+#> 8 10 3                          NA                          54
+#> 9 10 4                          NA                          68
+```
+
+Alternatively, one can run power analysis by fitting a Cox frailty
+model. Here we present another dataset `mice2`. Particularly, we need to
+specify a formula that fits a Cox frailty model with correlating
+variables in `mice2`, where `ID` is the PDX line number, `Y` is the
+event time variable, `Tx` is the treatment variable, and `status` is the
+event status.
+
+``` r
+data(mice2)
+### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
+PowTab <- PowFrailtyDat(data = mice2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
+                        n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
+PowTab
+#> Power analysis based on pilot data
+#> 
+#> A Cox frailty model was fitted
+#> Summary of parameter estimates from the pilot data:
+#> Scale parameter (lambda): 0.0154 
+#> Shape parameter (nu): 2.1722 
+#> Treatment effect (beta): -0.8794 
+#> Variance of random effect (tau2): 0.0422 
+#> The above parameter estimates are used as priori for Monte Carlo data generation from a Cox frailty model to estimate the power.
+#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
+#> The summary of power across all possible combinations of n and m is shown below.
+#> 
+#>    n m Power (%) Censoring Rate
+#> 1  3 2     36.49              0
+#> 2  3 3     42.35              0
+#> 3  3 4     62.22              0
+#> 4  5 2     49.30              0
+#> 5  5 3     69.23              0
+#> 6  5 4     78.72              0
+#> 7 10 2     90.57              0
+#> 8 10 3     88.78              0
+#> 9 10 4     96.91              0
+```
+
+The following code generates a power curve based on the object `PowTab`.
+
+``` r
+plotpower(PowTab[[5]], ylim = c(0, 1))
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+Or we can fit a Cox fixed effect model for running power analysis.
+
+``` r
+PowTabfit <- PowFrailtyDat(data = mice2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
+                           n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
+PowTabfit
+#> Power analysis based on pilot data
+#> 
+#> A Cox frailty model was fitted
+#> Summary of parameter estimates from the pilot data:
+#> Scale parameter (lambda): 0.0154 
+#> Shape parameter (nu): 2.1722 
+#> Treatment effect (beta): -0.8794 
+#> Variance of random effect (tau2): 0.0422 
+#> The above parameter estimates are used as priori for Monte Carlo data generation from a Cox frailty model to estimate the power.
+#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
+#> The summary of power across all possible combinations of n and m is shown below.
+#> 
+#>    n m Power (%) for mixed effects Power (%) for fixed effects Censoring Rate
+#> 1  3 2                          NA                          36            NaN
+#> 2  3 3                          NA                          48            NaN
+#> 3  3 4                          NA                          65            NaN
+#> 4  5 2                          NA                          57            NaN
+#> 5  5 3                          NA                          71            NaN
+#> 6  5 4                          NA                          83            NaN
+#> 7 10 2                          NA                          90            NaN
+#> 8 10 3                          NA                          92            NaN
+#> 9 10 4                          NA                          97            NaN
+```
 
 Alternatively, we may also conduct power analysis based on median
 survival of two randomized arms. We suppose that the median survival of
@@ -117,20 +183,16 @@ event time, a power analysis may be done as below:
 PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, sim = 100,
                      n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
-#> 
-#> Call:
-#>  PowerTable(n = n, m = m, beta = beta, tau2 = tau2, lambda = lambda, nu = nu, two.sided = two.sided, distr = "Weibull", censor = censor, sim = sim, print = "Cox-frailty", ncores = ncores) 
-#> 
 #>    n m Power (%) Censoring Rate
-#> 1  3 2     27.55              0
-#> 2  3 3     43.88              0
-#> 3  3 4     44.79              0
-#> 4  5 2     37.89              0
-#> 5  5 3     53.54              0
-#> 6  5 4     60.20              0
-#> 7 10 2     64.95              0
+#> 1  3 2     22.45              0
+#> 2  3 3     21.05              0
+#> 3  3 4     41.41              0
+#> 4  5 2     35.16              0
+#> 5  5 3     44.79              0
+#> 6  5 4     62.89              0
+#> 7 10 2     67.01              0
 #> 8 10 3     73.74              0
-#> 9 10 4     91.00              0
+#> 9 10 4     86.73              0
 ```
 
 ``` r
@@ -138,18 +200,14 @@ PowTab
 PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = 0.1, sigma2 = 1, sim = 100,
                    n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
-#> 
-#> Call:
-#>  PowerTable(n = n, m = m, beta = beta, tau2 = tau2, sigma2 = sigma2, two.sided = two.sided, distr = "normal", censor = FALSE, sim = sim, print = "ANOVA", ncores = ncores) 
-#> 
 #>    n m Power (%)
-#> 1  3 2        21
-#> 2  3 3        34
-#> 3  3 4        40
-#> 4  5 2        39
-#> 5  5 3        55
-#> 6  5 4        64
-#> 7 10 2        64
-#> 8 10 3        89
-#> 9 10 4        89
+#> 1  3 2        24
+#> 2  3 3        30
+#> 3  3 4        36
+#> 4  5 2        32
+#> 5  5 3        47
+#> 6  5 4        60
+#> 7 10 2        60
+#> 8 10 3        73
+#> 9 10 4        87
 ```

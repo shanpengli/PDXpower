@@ -13,16 +13,22 @@
 ##' @param sigma2 Error variance of log survival time for both treatment groups.
 ##' @param distr distributional assumption of survival time.
 ##' @param two.sided a logical value to indicate if a two-sided test is performed. Default is TRUE.
-##' @param lambdaC Scale parameter of exponential distribution for the hazard of censoring.
+##' @param Ct a fixed time point when a study is designed to end for generating type 1 censoring data.
 ##' @param censor logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.
+##' @return Object of \code{SimPDXdata} with elements
+##' \item{Data}{a simulated data.}
+##' @examples
+##' require(PDXpower)
+##' data <- SimPDXdata(n = 5, m = 3, beta = 0.8, sigma2 = 1, tau2 = 0.1,
+##'                    distr = "normal", censor = FALSE)
 ##' @export
 ##'
 
 SimPDXdata <- function(seed = 1000, n, m, beta, tau2, lambda = 0.03,
                        nu = 2, sigma2 = 1, distr = c("Weibull", "normal"), two.sided = TRUE,
-                       lambdaC = 0.1, censor = TRUE) {
+                       Ct = 5, censor = TRUE) {
 
-  set.seed(100+seed)
+  set.seed(seed)
   Data <- NULL
   if (distr == "Weibull") {
     for (i in 1:n) {
@@ -80,12 +86,12 @@ SimPDXdata <- function(seed = 1000, n, m, beta, tau2, lambda = 0.03,
 
   if (censor) {
     survtime <- vector()
-    C <- rexp(nrow(Data), rate = lambdaC)
+    #C <- rexp(nrow(Data), rate = lambdaC)
     for (i in 1:nrow(Data)) {
-      if (min(Data$Y[i], C[i]) == Data$Y[i]) {
-        survtime[i] <- min(Data$Y[i], C[i])
+      if (min(Data$Y[i], Ct) == Data$Y[i]) {
+        survtime[i] <- min(Data$Y[i], Ct)
       } else {
-        survtime[i] <- C[i]
+        survtime[i] <- Ct
         Data$status[i] <- 0
       }
     }

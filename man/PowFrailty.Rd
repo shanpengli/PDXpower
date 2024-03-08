@@ -14,7 +14,10 @@ PowFrailty(
   m = NULL,
   sim = 1000,
   censor = FALSE,
+  Ct = 5,
   two.sided = TRUE,
+  alpha = 0.05,
+  fixed.effect = FALSE,
   ncores = NULL
 )
 }
@@ -35,19 +38,29 @@ PowFrailty(
 
 \item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is FALSE.}
 
+\item{Ct}{a fixed time point when a study is designed to end for generating type 1 censoring data.}
+
 \item{two.sided}{A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
 
+\item{alpha}{significance level. Default is 0.05.}
+
+\item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
+
 \item{ncores}{number of cores for parallel computation.}
+}
+\value{
+Object of \code{PowFrailty} with elements
+\item{PowTab}{the estimates of statistical power across \code{n} and \code{m}.}
 }
 \description{
 A function to obtain a power table with the combination of
 various number of PDX lines and number of individuals per PDX lines per treatment based on a prior knowledge of median survival
 }
 \examples{
-\dontrun{
+\donttest{
 require(PDXpower)
 PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100,
-n = c(3, 5, 10), m = c(2, 3, 4))
+n = 3, m = 2, ncores = 1)
 PowTab
 plotpower(PowTab, ylim = c(0, 1))
 }

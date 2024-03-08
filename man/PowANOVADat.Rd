@@ -13,6 +13,8 @@ PowANOVADat(
   m = NULL,
   sim = 100,
   two.sided = TRUE,
+  alpha = 0.05,
+  fixed.effect = FALSE,
   ncores = NULL
 )
 }
@@ -30,20 +32,31 @@ with the response on the left of a ~ operator and the terms, separated by + oper
 
 \item{sim}{Number of Monte Carlo samples to be generated. Default is 1000.}
 
-\item{two.sided}{A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
+\item{two.sided}{a logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
+
+\item{alpha}{significance level. Default is 0.05.}
+
+\item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
 
 \item{ncores}{number of cores for parallel computation.}
+}
+\value{
+Object of \code{PowANOVADat} with elements
+\item{beta}{the estimated treatment effect from the pilot data.}
+\item{tau2}{the estimated inter-PDX variance from the pilot data.}
+\item{sigma2}{the estimated random error variance from the pilot data.}
+\item{PowTab}{the estimates of statistical power across \code{n} and \code{m}.}
 }
 \description{
 A function to obtain a power table with the combination of
 various number of PDX lines and number of individuals per PDX lines per treatment based on a preliminary dataset
 }
 \examples{
-\dontrun{
+\donttest{
 require(PDXpower)
-data(mice2)
-PowTab <- PowANOVADat(data = mice, formula = log(Y) ~ Tx, random = ~ 1|ID,
-n = c(3, 5, 10), m = c(2, 3, 4))
+data(mice1)
+PowTab <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, random = ~ 1|ID,
+n = 3, m = 2, ncores = 1)
 PowTab
 plotpower(PowTab[[4]], ylim = c(0, 1))
 }

@@ -17,7 +17,7 @@ SimPDXdata(
   sigma2 = 1,
   distr = c("Weibull", "normal"),
   two.sided = TRUE,
-  lambdaC = 0.1,
+  Ct = 5,
   censor = TRUE
 )
 }
@@ -42,11 +42,20 @@ SimPDXdata(
 
 \item{two.sided}{a logical value to indicate if a two-sided test is performed. Default is TRUE.}
 
-\item{lambdaC}{Scale parameter of exponential distribution for the hazard of censoring.}
+\item{Ct}{a fixed time point when a study is designed to end for generating type 1 censoring data.}
 
 \item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is TRUE.}
+}
+\value{
+Object of \code{SimPDXdata} with elements
+\item{Data}{a simulated data.}
 }
 \description{
 A function to calculate the power under pre-specified effect size, variance, and
 correlation using Monte Carlo sampling scheme
+}
+\examples{
+require(PDXpower)
+data <- SimPDXdata(n = 5, m = 3, beta = 0.8, sigma2 = 1, tau2 = 0.1,
+                   distr = "normal", censor = FALSE)
 }

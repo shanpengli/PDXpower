@@ -13,6 +13,9 @@
 
 \item{...}{Further arguments passed to or from other methods.}
 }
+\value{
+a summary of power analysis including parameter estimates and statistical power.
+}
 \description{
 Print PowFrailtyDat
 }

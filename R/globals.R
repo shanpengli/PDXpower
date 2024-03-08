@@ -1,3 +1,3 @@
 if (getRversion() >= '2.15.1') globalVariables(c("NofMice", "NofLine",
-                                                 "ANCOVArandom", "Coxrandom",
+                                                 "ANOVArandom", "Coxrandom", "ANOVAfix", "Coxfix",
                                                  "PDOX lines", "Number of mice"))

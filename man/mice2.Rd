@@ -3,7 +3,7 @@
 \docType{data}
 \name{mice2}
 \alias{mice2}
-\title{Simulated preliminary mice uncensored data}
+\title{Simulated preliminary mice censored data}
 \format{
 This data frame contains the following columns:
 
@@ -23,6 +23,6 @@ This data frame contains the following columns:
 data(mice2)
 }
 \description{
-The \code{mice2} data frame has 18 rows and 4 columns, with all uncensored observations.
+The \code{mice2} data frame has 18 rows and 4 columns, with some censored observations.
 }
 \keyword{datasets}

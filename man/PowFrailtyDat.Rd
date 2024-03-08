@@ -14,7 +14,10 @@ PowFrailtyDat(
   m = NULL,
   sim = 1000,
   censor = FALSE,
+  Ct = 5,
   two.sided = TRUE,
+  alpha = 0.05,
+  fixed.effect = FALSE,
   ncores = NULL
 )
 }
@@ -36,20 +39,35 @@ The response must be a survival object as returned by the Surv function.}
 
 \item{censor}{logical value of whether a censoring distribution is considered in a data generation setting. Default is FALSE.}
 
+\item{Ct}{a fixed time point when a study is designed to end for generating type 1 censoring data.}
+
 \item{two.sided}{A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
 
+\item{alpha}{significance level. Default is 0.05.}
+
+\item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
+
 \item{ncores}{number of cores for parallel computation.}
+}
+\value{
+Object of \code{PowFrailtyDat} with elements
+\item{lambda}{the estimated scale parameter of Weibull baseline hazard from the pilot data.}
+\item{nu}{the estimated shape parameter of Weibull baseline hazard from the pilot data.}
+\item{beta}{the estimated treatment effect from the pilot data.}
+\item{tau2}{the estimated inter-PDX variance from the pilot data.}
+\item{sigma2}{the estimated random error variance from the pilot data.}
+\item{PowTab}{the estimates of statistical power across \code{n} and \code{m}.}
 }
 \description{
 A function to obtain a power table with the combination of
 various number of PDX lines and number of individuals per PDX lines per treatment based on a preliminary dataset
 }
 \examples{
-\dontrun{
+\donttest{
 require(PDXpower)
-data(mice)
-PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y,status) ~ Tx + cluster(ID),
-n = c(3, 5, 10), m = c(2, 3, 4))
+data(mice2)
+PowTab <- PowFrailtyDat(data = mice2, formula = Surv(Y,status) ~ Tx + cluster(ID),
+n = 3, m = 2, ncores = 1)
 PowTab
 plotpower(PowTab[[5]], ylim = c(0, 1))
 }

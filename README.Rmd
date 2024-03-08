@@ -29,29 +29,49 @@ devtools::install_github("shanpengli/PDXpower")
 
 ## Example
 
-Below is a toy example how to conduct power analysis based on a preliminary dataset `mice`. Particularly, we need to specify a formula that fits a Cox Frailty model with correlating variables in `mice`, where `Y` is the event time variable, `status` is the event indicator, `Tx` is the treatment variable, and `ID` is the PDX line ID.
+Below is a toy example how to conduct power analysis based on a preliminary dataset `mice1`. Particularly, we need to specify a formula that fits a ANOVA mixed effects model with correlating variables in `mice1`, where `ID` is the PDX line number, `Y` is the event time variable, and `Tx` is the treatment variable.
 
-```{r, eval=TRUE}
+Next, run power analysis by fitting a ANOVA mixed effects model on `mice1`.
+```{r}
 library(PDXpower)
-data(mice)
+data(mice1)
+### Power analysis on a preliminary dataset by assuming the time to event is log-normal
+PowTab <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, 
+                      random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
+PowTab
+```
+
+The following code generates a power curve based on the object `PowTab`.
+```{r}
+plotpower(PowTab[[4]], ylim = c(0, 1))
+```
+
+Or we can fit a ANOVA fixed effect model for running power analysis.
+```{r}
+PowTabfit <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, 
+                      random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
+PowTabfit
+```
+
+Alternatively, one can run power analysis by fitting a Cox frailty model. Here we present another dataset `mice2`. Particularly, we need to specify a formula that fits a Cox frailty model with correlating variables in `mice2`, where `ID` is the PDX line number, `Y` is the event time variable, `Tx` is the treatment variable, and `status` is the event status.
+```{r, eval=TRUE}
+data(mice2)
 ### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
-PowTab <- PowFrailtyDat(data = mice, formula = Surv(Y, status) ~ Tx + cluster(ID), 
+PowTab <- PowFrailtyDat(data = mice2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
                         n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 PowTab
 ```
 
 The following code generates a power curve based on the object `PowTab`.
 ```{r}
-plotpower(PowTab[[5]])
+plotpower(PowTab[[5]], ylim = c(0, 1))
 ```
 
-Alternatively, we may also conduct power analysis based on ANOVA mixed effects model.
+Or we can fit a Cox fixed effect model for running power analysis.
 ```{r}
-### Power analysis on a preliminary dataset by assuming the time to event is log-normal
-PowTab <- PowANOVADat(data = mice2, formula = log(Y) ~ Tx, 
-                      random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
-PowTab
-plotpower(PowTab[[4]])
+PowTabfit <- PowFrailtyDat(data = mice2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
+                           n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
+PowTabfit
 ```
 
 Alternatively, we may also conduct power analysis based on median survival of two randomized arms. We suppose that the median survival of the control and treatment arm is 2.4 and 4.8, allowing a PDX line has 10% marginal error (`tau2=0.1`) of treatment effect and an exponential event time, a power analysis may be done as below:
