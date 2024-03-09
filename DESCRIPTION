@@ -1,6 +1,6 @@
 Package: PDXpower
 Type: Package
-Title: A Power Analysis Tool for Time to Event Outcome in Experimental Designs of Pre-Clinical Studies
+Title: Time to Event Outcome in Experimental Designs of Pre-Clinical Studies
 Version: 1.0.0
 Date: 2024-03-08
 Authors@R: c(
@@ -10,7 +10,7 @@ Authors@R: c(
         role = "ctb")
     )
 Maintainer: Shanpeng Li <lishanpeng0913@ucla.edu>
-Description: This is a R package to conduct simulation-based customized power calculation 
+Description: Conduct simulation-based customized power calculation 
              for clustered time to event data in a mixed crossed/nested design,
              where a number of cell lines and a number of mice within each cell line are considered to achieve a desired statistical power,
              motivated by Eckel-Passow and colleagues (2021) <doi:10.1093/neuonc/noab137>.
