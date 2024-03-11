@@ -43,9 +43,8 @@ print.PowerTable <- function(x, digits = 2, ...) {
   } else {
     if (fixed.effect) {
       data <- data.frame(x$NofLine, x$NofMice,
-                         round(x$ANOVArandom*100, digits = digits),
                          round(x$ANOVAfix*100, digits = digits))
-      colnames(data) <- c("n", "m", "Power (%) for mixed effects", "Power (%) for fixed effects")
+      colnames(data) <- c("n", "m", "Power (%) for fixed effects")
 
     } else {
       data <- data.frame(x$NofLine, x$NofMice,

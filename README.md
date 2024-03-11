@@ -91,16 +91,16 @@ PowTabfit
 #> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
 #> The summary of power across all possible combinations of n and m is shown below.
 #> 
-#>    n m Power (%) for mixed effects Power (%) for fixed effects
-#> 1  3 2                          NA                          16
-#> 2  3 3                          NA                          20
-#> 3  3 4                          NA                          27
-#> 4  5 2                          NA                          23
-#> 5  5 3                          NA                          31
-#> 6  5 4                          NA                          42
-#> 7 10 2                          NA                          46
-#> 8 10 3                          NA                          54
-#> 9 10 4                          NA                          68
+#>    n m Power (%) for fixed effects
+#> 1  3 2                          16
+#> 2  3 3                          20
+#> 3  3 4                          27
+#> 4  5 2                          23
+#> 5  5 3                          31
+#> 6  5 4                          42
+#> 7 10 2                          46
+#> 8 10 3                          54
+#> 9 10 4                          68
 ```
 
 Alternatively, one can run power analysis by fitting a Cox frailty
