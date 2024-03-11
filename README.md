@@ -3,7 +3,6 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/shanpengli/PDXpower/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/shanpengli/PDXpower/actions/workflows/R-CMD-check.yaml)
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/PDXpower)](https://cran.r-project.org/package=PDXpower)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/PDXpower)](https://cran.r-project.org/package=PDXpower)
@@ -129,16 +128,16 @@ PowTab
 #> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
 #> The summary of power across all possible combinations of n and m is shown below.
 #> 
-#>    n m Power (%) Censoring Rate
-#> 1  3 2     36.49              0
-#> 2  3 3     42.35              0
-#> 3  3 4     62.22              0
-#> 4  5 2     49.30              0
-#> 5  5 3     69.23              0
-#> 6  5 4     78.72              0
-#> 7 10 2     90.57              0
-#> 8 10 3     88.78              0
-#> 9 10 4     96.91              0
+#>    n m Power (%) for Cox frailty Censoring Rate
+#> 1  3 2                     36.49              0
+#> 2  3 3                     42.35              0
+#> 3  3 4                     62.22              0
+#> 4  5 2                     49.30              0
+#> 5  5 3                     69.23              0
+#> 6  5 4                     78.72              0
+#> 7 10 2                     90.57              0
+#> 8 10 3                     88.78              0
+#> 9 10 4                     96.91              0
 ```
 
 The following code generates a power curve based on the object `PowTab`.
@@ -167,16 +166,16 @@ PowTabfit
 #> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
 #> The summary of power across all possible combinations of n and m is shown below.
 #> 
-#>    n m Power (%) for mixed effects Power (%) for fixed effects Censoring Rate
-#> 1  3 2                          NA                          36            NaN
-#> 2  3 3                          NA                          48            NaN
-#> 3  3 4                          NA                          65            NaN
-#> 4  5 2                          NA                          57            NaN
-#> 5  5 3                          NA                          71            NaN
-#> 6  5 4                          NA                          83            NaN
-#> 7 10 2                          NA                          90            NaN
-#> 8 10 3                          NA                          92            NaN
-#> 9 10 4                          NA                          97            NaN
+#>    n m Power (%) for Cox fixed effects Censoring Rate
+#> 1  3 2                              36              0
+#> 2  3 3                              48              0
+#> 3  3 4                              65              0
+#> 4  5 2                              57              0
+#> 5  5 3                              71              0
+#> 6  5 4                              83              0
+#> 7 10 2                              90              0
+#> 8 10 3                              92              0
+#> 9 10 4                              97              0
 ```
 
 Alternatively, we may also conduct power analysis based on median
@@ -190,16 +189,16 @@ event time, a power analysis may be done as below:
 PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, sim = 100,
                      n = c(3, 5, 10), m = c(2, 3, 4))
 PowTab
-#>    n m Power (%) Censoring Rate
-#> 1  3 2     22.45              0
-#> 2  3 3     21.05              0
-#> 3  3 4     41.41              0
-#> 4  5 2     35.16              0
-#> 5  5 3     44.79              0
-#> 6  5 4     62.89              0
-#> 7 10 2     67.01              0
-#> 8 10 3     73.74              0
-#> 9 10 4     86.73              0
+#>    n m Power (%) for Cox frailty Censoring Rate
+#> 1  3 2                     22.45              0
+#> 2  3 3                     21.05              0
+#> 3  3 4                     41.41              0
+#> 4  5 2                     35.16              0
+#> 5  5 3                     44.79              0
+#> 6  5 4                     62.89              0
+#> 7 10 2                     67.01              0
+#> 8 10 3                     73.74              0
+#> 9 10 4                     86.73              0
 ```
 
 ``` r
