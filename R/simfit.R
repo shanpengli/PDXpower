@@ -7,13 +7,25 @@ simfit <- function(sim = 500, n, m, beta, tau2, alpha = 0.05, lambda = 0.03,
   if (is.null(ncores)) ncores <- parallel::detectCores()
 
   if (fixed.effect) {
-    ParaMatrixRaw <- parallel::mclapply(1:sim, bootfit,
-                                        n = n, m = m,
-                                        beta = beta, tau2 = tau2, alpha = alpha,
-                                        lambda = lambda, nu = nu, distr = distr, two.sided = two.sided,
-                                        Ct = Ct, censor = censor, model = model,
-                                        fixed.effect = fixed.effect,
-                                        mc.cores = ncores)
+
+    if (Sys.info()[1] != "Windows") {
+      ParaMatrixRaw <- parallel::mclapply(1:sim, bootfit,
+                                          n = n, m = m,
+                                          beta = beta, tau2 = tau2, alpha = alpha,
+                                          lambda = lambda, nu = nu, distr = distr, two.sided = two.sided,
+                                          Ct = Ct, censor = censor, model = model,
+                                          fixed.effect = fixed.effect,
+                                          mc.cores = ncores)
+    } else {
+      cl <- parallel::makeCluster(ncores)
+      ParaMatrixRaw <- parallel::parLapply(cl, 1:sim, bootfit,
+                                           n = n, m = m,
+                                           beta = beta, tau2 = tau2, alpha = alpha,
+                                           lambda = lambda, nu = nu, distr = distr, two.sided = two.sided,
+                                           Ct = Ct, censor = censor, model = model, fixed.effect = fixed.effect)
+      parallel::stopCluster(cl)
+    }
+
   } else {
     if (distr == "Weibull") {
 
