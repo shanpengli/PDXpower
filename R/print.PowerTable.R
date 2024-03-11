@@ -30,15 +30,14 @@ print.PowerTable <- function(x, digits = 2, ...) {
 
     if (fixed.effect) {
       data <- data.frame(x$NofLine, x$NofMice,
-                         round(x$Coxrandom*100, digits = digits),
                          round(x$Coxfix*100, digits = digits),
                          round(x$censoringrate, digits = digits))
-      colnames(data) <- c("n", "m", "Power (%) for mixed effects", "Power (%) for fixed effects", "Censoring Rate")
+      colnames(data) <- c("n", "m", "Power (%) for Cox fixed effects", "Censoring Rate")
     } else {
       data <- data.frame(x$NofLine, x$NofMice,
                          round(x$Coxrandom*100, digits = digits),
                          round(x$censoringrate, digits = digits))
-      colnames(data) <- c("n", "m", "Power (%)", "Censoring Rate")
+      colnames(data) <- c("n", "m", "Power (%) for Cox frailty", "Censoring Rate")
     }
 
   } else {

@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 # PDXpower
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/shanpengli/PDXpower/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/shanpengli/PDXpower/actions/workflows/R-CMD-check.yaml)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/PDXpower)](https://cran.r-project.org/package=PDXpower)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/PDXpower)](https://cran.r-project.org/package=PDXpower)
 [![CRAN_time_from_release](https://www.r-pkg.org/badges/ago/PDXpower)](https://cran.r-project.org/package=PDXpower)

@@ -142,6 +142,7 @@ PowerTable <- function(n, m, beta, tau2 = 0.5, alpha = 0.05, lambda = 0.03,
         if (fixed.effect) {
           for (k in 1:sim) {
             Model2.fixed[k] <- a[[k]]$Remodel2.fixed
+            censor.rate[k] <- a[[k]]$censor.rate
           }
           Model2.fixed <- as.logical(Model2.fixed)
           Powertable[i, 6] <- sum(Model2.fixed, na.rm = TRUE)/sum(!is.na(Model2.fixed))
