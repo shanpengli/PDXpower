@@ -40,6 +40,13 @@ PowFrailty <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1
                     alpha = alpha, Ct = Ct, fixed.effect = fixed.effect,
                     ncores = ncores)
 
-  return(PowTab)
+  cat("Treatment effect (beta):", beta, "\n")
+  cat("Scale parameter (lambda):", lambda, "\n")
+  cat("Shape parameter (nu):", nu, "\n")
+  cat("Variance of random effect (tau2):", tau2, "\n")
+  cat("The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.\n")
+  cat("The summary of power across all possible combinations of n and m is shown below.\n")
+  cat("N denotes the total number of mice given a fixed n and m.\n\n")
+  print(PowTab)
 
 }

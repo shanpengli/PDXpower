@@ -18,38 +18,39 @@ print.PowerTable <- function(x, digits = 2, ...) {
 
   print <- x$print
   fixed.effect <- x$fixed.effect
+  x$N <- x$NofLine*x$NofMice*2
 
   if (print == "both") {
-    data <- data.frame(x$NofLine, x$NofMice,
+    data <- data.frame(x$NofLine, x$NofMice, x$N,
                        round(x$ANOVArandom, digits = digits),
                        round(x$Coxrandom, digits = digits),
                        round(x$censoringrate, digits = digits))
 
-    colnames(data) <- c("n", "m", "ANOVA", "Cox Frailty", "Censoring Rate")
+    colnames(data) <- c("n", "m", "N", "ANOVA", "Cox Frailty", "Censoring Rate")
   } else if (print == "Cox-frailty") {
 
     if (fixed.effect) {
-      data <- data.frame(x$NofLine, x$NofMice,
+      data <- data.frame(x$NofLine, x$NofMice, x$N,
                          round(x$Coxfix*100, digits = digits),
                          round(x$censoringrate, digits = digits))
-      colnames(data) <- c("n", "m", "Power (%) for Cox fixed effects", "Censoring Rate")
+      colnames(data) <- c("n", "m", "N", "Power (%) for Cox fixed effects", "Censoring Rate")
     } else {
-      data <- data.frame(x$NofLine, x$NofMice,
+      data <- data.frame(x$NofLine, x$NofMice, x$N,
                          round(x$Coxrandom*100, digits = digits),
                          round(x$censoringrate, digits = digits))
-      colnames(data) <- c("n", "m", "Power (%) for Cox frailty", "Censoring Rate")
+      colnames(data) <- c("n", "m", "N", "Power (%) for Cox frailty", "Censoring Rate")
     }
 
   } else {
     if (fixed.effect) {
-      data <- data.frame(x$NofLine, x$NofMice,
+      data <- data.frame(x$NofLine, x$NofMice, x$N,
                          round(x$ANOVAfix*100, digits = digits))
-      colnames(data) <- c("n", "m", "Power (%) for fixed effects")
+      colnames(data) <- c("n", "m", "N", "Power (%) for fixed effects")
 
     } else {
-      data <- data.frame(x$NofLine, x$NofMice,
+      data <- data.frame(x$NofLine, x$NofMice, x$N,
                          round(x$ANOVArandom*100, digits = digits))
-      colnames(data) <- c("n", "m", "Power (%)")
+      colnames(data) <- c("n", "m", "N", "Power (%)")
     }
 
 

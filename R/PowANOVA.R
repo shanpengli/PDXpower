@@ -38,6 +38,12 @@ PowANOVA <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = 0.1, sigma2 =
                     fixed.effect = fixed.effect,
                     ncores = ncores)
 
-  return(PowTab)
+  cat("Treatment effect (beta):", beta, "\n")
+  cat("Variance of random effect (tau2):", tau2, "\n")
+  cat("Random error variance (sigma2):", sigma2, "\n")
+  cat("The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.\n")
+  cat("The summary of power across all possible combinations of n and m is shown below.\n")
+  cat("N denotes the total number of mice given a fixed n and m.\n\n")
+  print(PowTab)
 
 }
