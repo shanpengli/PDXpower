@@ -48,5 +48,6 @@ PowFrailty <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1
   cat("The summary of power across all possible combinations of n and m is shown below.\n")
   cat("N denotes the total number of mice given a fixed n and m.\n\n")
   print(PowTab)
+  return(PowTab)
 
 }
