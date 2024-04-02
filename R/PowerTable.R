@@ -23,7 +23,7 @@
 ##' @param ncores number of cores for parallel computation.
 ##' @return Object of class \code{PowerTable} with elements
 ##' \item{NofLine}{the number of PDX line \code{n}.}
-##' \item{NofMice}{the number of mice per arm per PDX line \code{m}.}
+##' \item{NofAnimals}{the number of animals per arm per PDX line \code{m}.}
 ##' \item{ANOVArandom}{the proportion of rejecting null treatment effect by fitting a ANOVA mixed effects model.}
 ##' \item{Coxrandom}{the proportion of rejecting null treatment effect by fitting a Cox frailty model.}
 ##' \item{ANOVAfix}{the proportion of rejecting null treatment effect by fitting a ANOVA fixed effects model if \code{fixed.effects = TRUE}.}
@@ -162,7 +162,7 @@ PowerTable <- function(n, m, beta, tau2 = 0.5, alpha = 0.05, lambda = 0.03,
     }
     Powertable[, 1] <- n[j]
     Powertable <- as.data.frame(Powertable)
-    colnames(Powertable) <- c("NofLine", "NofMice", "ANOVArandom", "Coxrandom", "ANOVAfix", "Coxfix", "censoringrate")
+    colnames(Powertable) <- c("NofLine", "NofAnimals", "ANOVArandom", "Coxrandom", "ANOVAfix", "Coxfix", "censoringrate")
     SumPowertable <- rbind(SumPowertable, Powertable)
   }
 

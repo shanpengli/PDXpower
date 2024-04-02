@@ -8,9 +8,9 @@ number of PDX lines and number of individuals per PDX lines per treatment}
 plotpower(
   object,
   ylim = c(0, 0.1),
-  x.axis.n.breaks = NULL,
-  y.axis.n.breaks = NULL,
-  cut.off = 0,
+  x.axis.n.breaks = 10,
+  y.axis.n.breaks = 10,
+  cut.off = 0.8,
   legend.position = "right"
 )
 }
@@ -19,11 +19,11 @@ plotpower(
 
 \item{ylim}{limit of y axis.}
 
-\item{x.axis.n.breaks}{number of breaks of the x axis. Default is NULL.}
+\item{x.axis.n.breaks}{number of breaks of the x axis. Default is 10.}
 
-\item{y.axis.n.breaks}{number of breaks of the y axis. Default is NULL.}
+\item{y.axis.n.breaks}{number of breaks of the y axis. Default is 10.}
 
-\item{cut.off}{a number to indicate the cut-off for power analysis. Default is 0.}
+\item{cut.off}{a number to indicate the cut-off for power analysis. Default is 0.8.}
 
 \item{legend.position}{the position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector).}
 }

@@ -64,7 +64,7 @@ either \code{print = "ANOVA"} or \code{print = "Cox-frailty"}.}
 \value{
 Object of class \code{PowerTable} with elements
 \item{NofLine}{the number of PDX line \code{n}.}
-\item{NofMice}{the number of mice per arm per PDX line \code{m}.}
+\item{NofAnimals}{the number of animals per arm per PDX line \code{m}.}
 \item{ANOVArandom}{the proportion of rejecting null treatment effect by fitting a ANOVA mixed effects model.}
 \item{Coxrandom}{the proportion of rejecting null treatment effect by fitting a Cox frailty model.}
 \item{ANOVAfix}{the proportion of rejecting null treatment effect by fitting a ANOVA fixed effects model if \code{fixed.effects = TRUE}.}

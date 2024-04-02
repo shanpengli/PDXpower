@@ -26,43 +26,41 @@ devtools::install_github("shanpengli/PDXpower")
 ## Example
 
 Below is a toy example how to conduct power analysis based on a
-preliminary dataset `mice1`. Particularly, we need to specify a formula
-that fits a ANOVA mixed effects model with correlating variables in
-`mice1`, where `ID` is the PDX line number, `Y` is the event time
+preliminary dataset `animals1`. Particularly, we need to specify a
+formula that fits a ANOVA mixed effects model with correlating variables
+in `animals1`, where `ID` is the PDX line number, `Y` is the event time
 variable, and `Tx` is the treatment variable.
 
 Next, run power analysis by fitting a ANOVA mixed effects model on
-`mice1`.
+`animals1`.
 
 ``` r
 library(PDXpower)
 #> Loading required package: survival
 #> Loading required package: parallel
-data(mice1)
+data(animals1)
 ### Power analysis on a preliminary dataset by assuming the time to event is log-normal
-PowTab <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, 
+PowTab <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 PowTab
-#> Power analysis based on pilot data
-#> 
-#> A mixed effects ANOVA model was fitted
-#> Summary of parameter estimates from the pilot data:
-#> Treatment effect (beta): -0.5569 
-#> Variance of random effect (tau2): 0 
-#> Random error variance (sigma2): 0.2554 
-#> The above parameter estimates are used as priori for Monte Carlo data generation from a mixed effects ANOVA model to estimate the power.
-#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
-#> The summary of power across all possible combinations of n and m is shown below.
-#> N denotes the total number of mice given a fixed n and m.
+#> Parameter estimates based on the pilot data:
+#> Treatment effect (beta): 0.7299 
+#> Variance of random effect (tau2): 0.0332 
+#> Random error variance (sigma2): 0.386 
+#> Monte Carlo power estimate, calculated as the
+#>   proportion of instances where the null hypothesis
+#>   H_0: beta = 0 is rejected (n = number of PDX lines,
+#>   m = number of animals per arm per PDX line,
+#>   N = total number of animals for a given combination of n and m).
 #> 
 #>    n m  N Power (%)
-#> 1  3 2 12        37
-#> 2  3 3 18        56
-#> 3  3 4 24        85
-#> 4  5 2 20        67
-#> 5  5 3 30        81
-#> 6  5 4 40        97
-#> 7 10 2 40        93
+#> 1  3 2 12        43
+#> 2  3 3 18        65
+#> 3  3 4 24        77
+#> 4  5 2 20        70
+#> 5  5 3 30        87
+#> 6  5 4 40        95
+#> 7 10 2 40        98
 #> 8 10 3 60        99
 #> 9 10 4 80       100
 ```
@@ -78,58 +76,56 @@ plotpower(PowTab[[4]], ylim = c(0, 1))
 Or we can fit a ANOVA fixed effect model for running power analysis.
 
 ``` r
-PowTabfit <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, 
+PowTabfit <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
 PowTabfit
-#> Power analysis based on pilot data
-#> 
-#> A mixed effects ANOVA model was fitted
-#> Summary of parameter estimates from the pilot data:
-#> Treatment effect (beta): -0.5569 
-#> Variance of random effect (tau2): 0 
-#> Random error variance (sigma2): 0.2554 
-#> The above parameter estimates are used as priori for Monte Carlo data generation from a mixed effects ANOVA model to estimate the power.
-#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
-#> The summary of power across all possible combinations of n and m is shown below.
-#> N denotes the total number of mice given a fixed n and m.
+#> Parameter estimates based on the pilot data:
+#> Treatment effect (beta): 0.7299 
+#> Variance of random effect (tau2): 0.0332 
+#> Random error variance (sigma2): 0.386 
+#> Monte Carlo power estimate, calculated as the
+#>   proportion of instances where the null hypothesis
+#>   H_0: beta = 0 is rejected (n = number of PDX lines,
+#>   m = number of animals per arm per PDX line,
+#>   N = total number of animals for a given combination of n and m).
 #> 
 #>    n m  N Power (%) for fixed effects
-#> 1  3 2 12                          16
-#> 2  3 3 18                          20
-#> 3  3 4 24                          27
-#> 4  5 2 20                          23
-#> 5  5 3 30                          31
-#> 6  5 4 40                          42
-#> 7 10 2 40                          46
-#> 8 10 3 60                          54
-#> 9 10 4 80                          68
+#> 1  3 2 12                          22
+#> 2  3 3 18                          37
+#> 3  3 4 24                          36
+#> 4  5 2 20                          31
+#> 5  5 3 30                          49
+#> 6  5 4 40                          59
+#> 7 10 2 40                          58
+#> 8 10 3 60                          83
+#> 9 10 4 80                          89
 ```
 
 Alternatively, one can run power analysis by fitting a Cox frailty
-model. Here we present another dataset `mice2`. Particularly, we need to
-specify a formula that fits a Cox frailty model with correlating
-variables in `mice2`, where `ID` is the PDX line number, `Y` is the
+model. Here we present another dataset `animals2`. Particularly, we need
+to specify a formula that fits a Cox frailty model with correlating
+variables in `animals2`, where `ID` is the PDX line number, `Y` is the
 event time variable, `Tx` is the treatment variable, and `status` is the
 event status.
 
 ``` r
-data(mice2)
+data(animals2)
 ### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
-PowTab <- PowFrailtyDat(data = mice2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
+PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
                         n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 PowTab
-#> Power analysis based on pilot data
-#> 
-#> A Cox frailty model was fitted
-#> Summary of parameter estimates from the pilot data:
+#> Parameter estimates based on the pilot data:
 #> Scale parameter (lambda): 0.0154 
 #> Shape parameter (nu): 2.1722 
 #> Treatment effect (beta): -0.8794 
 #> Variance of random effect (tau2): 0.0422 
-#> The above parameter estimates are used as priori for Monte Carlo data generation from a Cox frailty model to estimate the power.
-#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
-#> The summary of power across all possible combinations of n and m is shown below.
-#> N denotes the total number of mice given a fixed n and m.
+#> Monte Carlo power estimate, calculated as the
+#>   proportion of instances where the null hypothesis
+#>   H_0: beta = 0 is rejected (n = number of PDX lines,
+#>   m = number of animals per arm per PDX line,
+#>   N = total number of animals for a given combination
+#>   of n and m).
+#> The mean censoring rate for each combination of n and m is calculated across  100  Monte Carlo samples.
 #> 
 #>    n m  N Power (%) for Cox frailty Censoring Rate
 #> 1  3 2 12                     36.49              0
@@ -154,21 +150,21 @@ plotpower(PowTab[[5]], ylim = c(0, 1))
 Or we can fit a Cox fixed effect model for running power analysis.
 
 ``` r
-PowTabfit <- PowFrailtyDat(data = mice2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
-                           n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
-PowTabfit
-#> Power analysis based on pilot data
-#> 
-#> A Cox frailty model was fitted
-#> Summary of parameter estimates from the pilot data:
+PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
+                        n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
+PowTab
+#> Parameter estimates based on the pilot data:
 #> Scale parameter (lambda): 0.0154 
 #> Shape parameter (nu): 2.1722 
 #> Treatment effect (beta): -0.8794 
 #> Variance of random effect (tau2): 0.0422 
-#> The above parameter estimates are used as priori for Monte Carlo data generation from a Cox frailty model to estimate the power.
-#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
-#> The summary of power across all possible combinations of n and m is shown below.
-#> N denotes the total number of mice given a fixed n and m.
+#> Monte Carlo power estimate, calculated as the
+#>   proportion of instances where the null hypothesis
+#>   H_0: beta = 0 is rejected (n = number of PDX lines,
+#>   m = number of animals per arm per PDX line,
+#>   N = total number of animals for a given combination
+#>   of n and m).
+#> The mean censoring rate for each combination of n and m is calculated across  100  Monte Carlo samples.
 #> 
 #>    n m  N Power (%) for Cox fixed effects Censoring Rate
 #> 1  3 2 12                              36              0
@@ -196,21 +192,14 @@ PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, 
 #> Scale parameter (lambda): 0.2888113 
 #> Shape parameter (nu): 1 
 #> Variance of random effect (tau2): 0.1 
-#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
-#> The summary of power across all possible combinations of n and m is shown below.
-#> N denotes the total number of mice given a fixed n and m.
+#> Monte Carlo power estimate, calculated as the
+#>   proportion of instances where the null hypothesis
+#>   H_0: beta = 0 is rejected (n = number of PDX lines,
+#>   m = number of animals per arm per PDX line,
+#>   N = total number of animals for a given combination
+#>   of n and m).
+#> The mean censoring rate for each combination of n and m is calculated across  100  Monte Carlo samples.
 #> 
-#>    n m  N Power (%) for Cox frailty Censoring Rate
-#> 1  3 2 12                     22.45              0
-#> 2  3 3 18                     21.05              0
-#> 3  3 4 24                     41.41              0
-#> 4  5 2 20                     35.16              0
-#> 5  5 3 30                     44.79              0
-#> 6  5 4 40                     62.89              0
-#> 7 10 2 40                     67.01              0
-#> 8 10 3 60                     73.74              0
-#> 9 10 4 80                     86.73              0
-PowTab
 #>    n m  N Power (%) for Cox frailty Censoring Rate
 #> 1  3 2 12                     22.45              0
 #> 2  3 3 18                     21.05              0
@@ -225,33 +214,26 @@ PowTab
 
 ``` r
 ### Assume the time to event outcome is log-normal
-PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = 0.1, sigma2 = 1, sim = 100,
+PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, icc = 0.25, sigma2 = 1, sim = 100,
                    n = c(3, 5, 10), m = c(2, 3, 4))
 #> Treatment effect (beta): -0.6931472 
-#> Variance of random effect (tau2): 0.1 
+#> Variance of random effect (tau2): 0.3333333 
+#> Intraclass correlation coefficient (icc): 0.25 
 #> Random error variance (sigma2): 1 
-#> The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.
-#> The summary of power across all possible combinations of n and m is shown below.
-#> N denotes the total number of mice given a fixed n and m.
+#> Monte Carlo power estimate, calculated as the
+#>   proportion of instances where the null hypothesis
+#>   H_0: beta = 0 is rejected (n = number of PDX lines,
+#>   m = number of animals per arm per PDX line,
+#>   N = total number of animals for a given combination
+#>   of n and m).
 #> 
 #>    n m  N Power (%)
-#> 1  3 2 12        24
+#> 1  3 2 12        25
 #> 2  3 3 18        30
 #> 3  3 4 24        36
 #> 4  5 2 20        32
 #> 5  5 3 30        47
-#> 6  5 4 40        60
-#> 7 10 2 40        60
-#> 8 10 3 60        73
-#> 9 10 4 80        87
-PowTab
-#>    n m  N Power (%)
-#> 1  3 2 12        24
-#> 2  3 3 18        30
-#> 3  3 4 24        36
-#> 4  5 2 20        32
-#> 5  5 3 30        47
-#> 6  5 4 40        60
+#> 6  5 4 40        58
 #> 7 10 2 40        60
 #> 8 10 3 60        73
 #> 9 10 4 80        87

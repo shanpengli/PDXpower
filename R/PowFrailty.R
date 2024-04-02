@@ -44,9 +44,13 @@ PowFrailty <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1
   cat("Scale parameter (lambda):", lambda, "\n")
   cat("Shape parameter (nu):", nu, "\n")
   cat("Variance of random effect (tau2):", tau2, "\n")
-  cat("The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.\n")
-  cat("The summary of power across all possible combinations of n and m is shown below.\n")
-  cat("N denotes the total number of mice given a fixed n and m.\n\n")
+  cat("Monte Carlo power estimate, calculated as the
+  proportion of instances where the null hypothesis
+  H_0: beta = 0 is rejected (n = number of PDX lines,
+  m = number of animals per arm per PDX line,
+  N = total number of animals for a given combination
+  of n and m).\n")
+  cat("The mean censoring rate for each combination of n and m is calculated across ", PowTab$nsim, " Monte Carlo samples.\n\n")
   print(PowTab)
   return(PowTab)
 

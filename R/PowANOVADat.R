@@ -20,8 +20,8 @@
 ##' @examples
 ##' \donttest{
 ##' require(PDXpower)
-##' data(mice1)
-##'PowTab <- PowANOVADat(data = mice1, formula = log(Y) ~ Tx, random = ~ 1|ID,
+##' data(animals1)
+##'PowTab <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, random = ~ 1|ID,
 ##'n = 3, m = 2, ncores = 1)
 ##'PowTab
 ##'plotpower(PowTab[[4]], ylim = c(0, 1))

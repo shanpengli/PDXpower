@@ -1,8 +1,8 @@
 Package: PDXpower
 Type: Package
 Title: Time to Event Outcome in Experimental Designs of Pre-Clinical Studies
-Version: 1.0.0
-Date: 2024-03-08
+Version: 1.0.1
+Date: 2024-04-01
 Authors@R: c(
     person("Shanpeng", "Li", email = "lishanpeng0913@ucla.edu", 
         role = c("aut", "cre")),

@@ -9,6 +9,7 @@ PowANOVA(
   ctl.med.surv = 2.4,
   tx.med.surv = 4.8,
   tau2 = 0.1,
+  icc = NULL,
   sigma2 = 1,
   n = NULL,
   m = NULL,
@@ -26,13 +27,16 @@ PowANOVA(
 
 \item{tau2}{variance of PDX line specific random effect. Default is 0.1.}
 
+\item{icc}{intraclass correlation coefficient. Default is NULL. If \code{icc} is specified,
+then tau2 will be calculated automatically. Otherwise, \code{tau2} must be specified.}
+
 \item{sigma2}{variance of random error.}
 
 \item{n}{an integer number to specify the number of PDX lines.}
 
 \item{m}{an integer number to specify the number of individuals per PDX line per treatment.}
 
-\item{sim}{Number of Monte Carlo samples to be generated. Default is 1000.}
+\item{sim}{Number of Monte Carlo samples to be generated. Default is 100.}
 
 \item{two.sided}{A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
 
@@ -53,7 +57,7 @@ various number of PDX lines and number of individuals per PDX lines per treatmen
 \examples{
 \donttest{
 require(PDXpower)
-PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 5,
+PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 5, icc = 0.4,
 n = 3, m = 2, ncores = 1)
 PowTab
 plotpower(PowTab, ylim = c(0, 1))

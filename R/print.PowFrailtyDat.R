@@ -15,17 +15,18 @@ print.PowFrailtyDat <- function(x, digits = 4, ...) {
   if (!inherits(x, "PowFrailtyDat"))
     stop("Use only with 'PowFrailtyDat' xs.\n")
 
-  cat("Power analysis based on pilot data\n\n")
-  cat("A Cox frailty model was fitted\n")
-  cat("Summary of parameter estimates from the pilot data:\n")
+  cat("Parameter estimates based on the pilot data:\n")
   cat("Scale parameter (lambda):", round(x$lambda, digits), "\n")
   cat("Shape parameter (nu):", round(x$nu, digits), "\n")
   cat("Treatment effect (beta):", round(x$beta, digits), "\n")
   cat("Variance of random effect (tau2):", round(x$tau2, digits), "\n")
-  cat("The above parameter estimates are used as priori for Monte Carlo data generation from a Cox frailty model to estimate the power.\n")
-  cat("The estimated power for each combination of number of PDX lines (n) and number of mice per arm per PDX line (m) is calculated as the proportion of rejecting the null hypothesis beta = 0.\n")
-  cat("The summary of power across all possible combinations of n and m is shown below.\n")
-  cat("N denotes the total number of mice given a fixed n and m.\n\n")
+  cat("Monte Carlo power estimate, calculated as the
+  proportion of instances where the null hypothesis
+  H_0: beta = 0 is rejected (n = number of PDX lines,
+  m = number of animals per arm per PDX line,
+  N = total number of animals for a given combination
+  of n and m).\n")
+  cat("The mean censoring rate for each combination of n and m is calculated across ", x$PowTab$nsim, " Monte Carlo samples.\n\n")
   print(x$PowTab)
 
 }

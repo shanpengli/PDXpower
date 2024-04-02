@@ -18,10 +18,10 @@ print.PowerTable <- function(x, digits = 2, ...) {
 
   print <- x$print
   fixed.effect <- x$fixed.effect
-  x$N <- x$NofLine*x$NofMice*2
+  x$N <- x$NofLine*x$NofAnimals*2
 
   if (print == "both") {
-    data <- data.frame(x$NofLine, x$NofMice, x$N,
+    data <- data.frame(x$NofLine, x$NofAnimals, x$N,
                        round(x$ANOVArandom, digits = digits),
                        round(x$Coxrandom, digits = digits),
                        round(x$censoringrate, digits = digits))
@@ -30,12 +30,12 @@ print.PowerTable <- function(x, digits = 2, ...) {
   } else if (print == "Cox-frailty") {
 
     if (fixed.effect) {
-      data <- data.frame(x$NofLine, x$NofMice, x$N,
+      data <- data.frame(x$NofLine, x$NofAnimals, x$N,
                          round(x$Coxfix*100, digits = digits),
                          round(x$censoringrate, digits = digits))
       colnames(data) <- c("n", "m", "N", "Power (%) for Cox fixed effects", "Censoring Rate")
     } else {
-      data <- data.frame(x$NofLine, x$NofMice, x$N,
+      data <- data.frame(x$NofLine, x$NofAnimals, x$N,
                          round(x$Coxrandom*100, digits = digits),
                          round(x$censoringrate, digits = digits))
       colnames(data) <- c("n", "m", "N", "Power (%) for Cox frailty", "Censoring Rate")
@@ -43,12 +43,12 @@ print.PowerTable <- function(x, digits = 2, ...) {
 
   } else {
     if (fixed.effect) {
-      data <- data.frame(x$NofLine, x$NofMice, x$N,
+      data <- data.frame(x$NofLine, x$NofAnimals, x$N,
                          round(x$ANOVAfix*100, digits = digits))
       colnames(data) <- c("n", "m", "N", "Power (%) for fixed effects")
 
     } else {
-      data <- data.frame(x$NofLine, x$NofMice, x$N,
+      data <- data.frame(x$NofLine, x$NofAnimals, x$N,
                          round(x$ANOVArandom*100, digits = digits))
       colnames(data) <- c("n", "m", "N", "Power (%)")
     }

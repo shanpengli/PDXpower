@@ -25,8 +25,8 @@
 ##' @examples
 ##' \donttest{
 ##' require(PDXpower)
-##' data(mice2)
-##' PowTab <- PowFrailtyDat(data = mice2, formula = Surv(Y,status) ~ Tx + cluster(ID),
+##' data(animals2)
+##' PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y,status) ~ Tx + cluster(ID),
 ##' n = 3, m = 2, ncores = 1)
 ##' PowTab
 ##' plotpower(PowTab[[5]], ylim = c(0, 1))
