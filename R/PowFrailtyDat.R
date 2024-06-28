@@ -14,6 +14,7 @@
 ##' @param two.sided A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param alpha significance level. Default is 0.05.
 ##' @param fixed.effect logical value to indicate if a fixed effects only model is fitted. Default is FALSE.
+##' @param digits digits the number of significant digits to use when printing.
 ##' @param ncores number of cores for parallel computation.
 ##' @return Object of \code{PowFrailtyDat} with elements
 ##' \item{lambda}{the estimated scale parameter of Weibull baseline hazard from the pilot data.}
@@ -36,7 +37,7 @@
 
 PowFrailtyDat <- function(data = NULL, formula = NULL, maxit = 50, hazard = "Weibull",
                           n = NULL, m = NULL, sim = 1000, censor = FALSE, Ct = 5,
-                          two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, ncores = NULL) {
+                          two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, digits = 4, ncores = NULL) {
 
   if (!is.data.frame(data))
     stop("This is not a date frame.")
@@ -66,6 +67,20 @@ PowFrailtyDat <- function(data = NULL, formula = NULL, maxit = 50, hazard = "Wei
 
   class(result) <- "PowFrailtyDat"
 
+  cat("Parameter estimates based on the pilot data:\n")
+  cat("Scale parameter (lambda):", round(result$lambda, digits), "\n")
+  cat("Shape parameter (nu):", round(result$nu, digits), "\n")
+  cat("Treatment effect (beta):", round(result$beta, digits), "\n")
+  cat("Variance of random effect (tau2):", round(result$tau2, digits), "\n\n")
+  cat("Monte Carlo power estimate, calculated as the
+  proportion of instances where the null hypothesis
+  H_0: beta = 0 is rejected (n = number of PDX lines,
+  m = number of animals per arm per PDX line,
+  N = total number of animals for a given combination
+  of n and m,
+  Censoring Rate = average censoring rate across 500
+  Monte Carlo samples):\n")
+  print(result$PowTab)
   return(result)
 
 }

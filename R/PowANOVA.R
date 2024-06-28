@@ -3,8 +3,8 @@
 ##' @aliases PowANOVA
 ##' @param ctl.med.surv a numeric value of the hypothesized medial survival in the control arm. Default is 2.4.
 ##' @param tx.med.surv a numeric value of the hypothesized medial survival in the treatment arm. Default is 4.8.
-##' @param tau2 variance of PDX line specific random effect. Default is 0.1.
-##' @param icc intraclass correlation coefficient. Default is NULL. If \code{icc} is specified,
+##' @param tau2 variance of PDX line specific random effect. Default is NULL. tau2 should be specified only when \code{icc} is set as NULL.
+##' @param icc intraclass correlation coefficient. Default is 0.1. If \code{icc} is specified,
 ##' then tau2 will be calculated automatically. Otherwise, \code{tau2} must be specified.
 ##' @param sigma2 variance of random error.
 ##' @param n an integer number to specify the number of PDX lines.
@@ -27,15 +27,19 @@
 ##' @export
 ##'
 
-PowANOVA <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = 0.1, icc = NULL, sigma2 = 1,
+PowANOVA <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = NULL, icc = 0.1, sigma2 = 1,
                        n = NULL, m = NULL, sim = 100,
                        two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, ncores = NULL) {
 
   beta <- log(ctl.med.surv/tx.med.surv)
 
-  if (is.numeric(icc)) tau2 <- icc/(1-icc)*sigma2
-
-  if (is.numeric(tau2)) icc <- tau2/(tau2 + sigma2)
+  if (is.numeric(icc) & is.null(tau2)) {
+    tau2 <- icc/(1-icc)*sigma2
+  } else if (is.numeric(tau2) & is.null(icc)) {
+    icc <- tau2/(tau2 + sigma2)
+  } else {
+    stop("Please either specify tau2 or icc at a time.")
+  }
 
   PowTab <- PowerTable(n = n, m = m, beta = beta, sigma2 = sigma2,
                     tau2 = tau2, distr = "normal", sim = sim,
@@ -46,14 +50,14 @@ PowANOVA <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = 0.1, icc = NU
 
   cat("Treatment effect (beta):", beta, "\n")
   cat("Variance of random effect (tau2):", tau2, "\n")
-  cat("Intraclass correlation coefficient (icc):", icc, "\n")
-  cat("Random error variance (sigma2):", sigma2, "\n")
+  cat("Intra-PDX correlation coefficient (icc):", icc, "\n")
+  cat("Random error variance (sigma2):", sigma2, "\n\n")
   cat("Monte Carlo power estimate, calculated as the
   proportion of instances where the null hypothesis
   H_0: beta = 0 is rejected (n = number of PDX lines,
   m = number of animals per arm per PDX line,
   N = total number of animals for a given combination
-  of n and m).\n\n")
+  of n and m):\n")
   print(PowTab)
   return(PowTab)
 

@@ -8,8 +8,8 @@ various number of PDX lines and number of individuals per PDX lines per treatmen
 PowANOVA(
   ctl.med.surv = 2.4,
   tx.med.surv = 4.8,
-  tau2 = 0.1,
-  icc = NULL,
+  tau2 = NULL,
+  icc = 0.1,
   sigma2 = 1,
   n = NULL,
   m = NULL,
@@ -25,9 +25,9 @@ PowANOVA(
 
 \item{tx.med.surv}{a numeric value of the hypothesized medial survival in the treatment arm. Default is 4.8.}
 
-\item{tau2}{variance of PDX line specific random effect. Default is 0.1.}
+\item{tau2}{variance of PDX line specific random effect. Default is NULL. tau2 should be specified only when \code{icc} is set as NULL.}
 
-\item{icc}{intraclass correlation coefficient. Default is NULL. If \code{icc} is specified,
+\item{icc}{intraclass correlation coefficient. Default is 0.1. If \code{icc} is specified,
 then tau2 will be calculated automatically. Otherwise, \code{tau2} must be specified.}
 
 \item{sigma2}{variance of random error.}

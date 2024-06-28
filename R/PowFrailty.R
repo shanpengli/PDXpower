@@ -43,14 +43,15 @@ PowFrailty <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1
   cat("Treatment effect (beta):", beta, "\n")
   cat("Scale parameter (lambda):", lambda, "\n")
   cat("Shape parameter (nu):", nu, "\n")
-  cat("Variance of random effect (tau2):", tau2, "\n")
+  cat("Variance of random effect (tau2):", tau2, "\n\n")
   cat("Monte Carlo power estimate, calculated as the
   proportion of instances where the null hypothesis
   H_0: beta = 0 is rejected (n = number of PDX lines,
   m = number of animals per arm per PDX line,
   N = total number of animals for a given combination
-  of n and m).\n")
-  cat("The mean censoring rate for each combination of n and m is calculated across ", PowTab$nsim, " Monte Carlo samples.\n\n")
+  of n and m,
+  Censoring Rate = average censoring rate across 500
+  Monte Carlo samples):\n")
   print(PowTab)
   return(PowTab)
 

@@ -26,7 +26,7 @@ print.PowerTable <- function(x, digits = 2, ...) {
                        round(x$Coxrandom, digits = digits),
                        round(x$censoringrate, digits = digits))
 
-    colnames(data) <- c("n", "m", "N", "ANOVA", "Cox Frailty", "Censoring Rate")
+    colnames(data) <- c("n", "m", "N", "ANOVA", "Cox's Frailty", "Censoring Rate")
   } else if (print == "Cox-frailty") {
 
     if (fixed.effect) {
@@ -38,7 +38,7 @@ print.PowerTable <- function(x, digits = 2, ...) {
       data <- data.frame(x$NofLine, x$NofAnimals, x$N,
                          round(x$Coxrandom*100, digits = digits),
                          round(x$censoringrate, digits = digits))
-      colnames(data) <- c("n", "m", "N", "Power (%) for Cox frailty", "Censoring Rate")
+      colnames(data) <- c("n", "m", "N", "Power (%) for Cox's frailty", "Censoring Rate")
     }
 
   } else {

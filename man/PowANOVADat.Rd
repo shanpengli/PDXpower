@@ -15,6 +15,7 @@ PowANOVADat(
   two.sided = TRUE,
   alpha = 0.05,
   fixed.effect = FALSE,
+  digits = 4,
   ncores = NULL
 )
 }
@@ -37,6 +38,8 @@ with the response on the left of a ~ operator and the terms, separated by + oper
 \item{alpha}{significance level. Default is 0.05.}
 
 \item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
+
+\item{digits}{digits the number of significant digits to use when printing.}
 
 \item{ncores}{number of cores for parallel computation.}
 }

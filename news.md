@@ -1,3 +1,7 @@
+# PDXpower 1.0.2
+
+* Fix small bugs and modify the output to the functions.
+
 # PDXpower 1.0.1
 
 * Fix small bugs and add more arguments to the functions.

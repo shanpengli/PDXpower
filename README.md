@@ -42,17 +42,16 @@ data(animals1)
 ### Power analysis on a preliminary dataset by assuming the time to event is log-normal
 PowTab <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
-PowTab
 #> Parameter estimates based on the pilot data:
 #> Treatment effect (beta): 0.7299 
 #> Variance of random effect (tau2): 0.0332 
 #> Random error variance (sigma2): 0.386 
+#> 
 #> Monte Carlo power estimate, calculated as the
 #>   proportion of instances where the null hypothesis
 #>   H_0: beta = 0 is rejected (n = number of PDX lines,
 #>   m = number of animals per arm per PDX line,
-#>   N = total number of animals for a given combination of n and m).
-#> 
+#>   N = total number of animals for a given combination of n and m):
 #>    n m  N Power (%)
 #> 1  3 2 12        43
 #> 2  3 3 18        65
@@ -76,29 +75,31 @@ plotpower(PowTab[[4]], ylim = c(0, 1))
 Or we can fit a ANOVA fixed effect model for running power analysis.
 
 ``` r
-PowTabfit <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
-                      random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
-PowTabfit
-#> Parameter estimates based on the pilot data:
-#> Treatment effect (beta): 0.7299 
-#> Variance of random effect (tau2): 0.0332 
-#> Random error variance (sigma2): 0.386 
+### Power analysis by specifying the median survival
+### of control and treatment group and assuming
+### the time-to-event is log-normal distributed
+PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 7.2, icc = 0.1, sigma2 = 1, sim = 100, n = c(3, 5, 10), m = c(2, 3, 4))
+#> Treatment effect (beta): -1.098612 
+#> Variance of random effect (tau2): 0.1111111 
+#> Intra-PDX correlation coefficient (icc): 0.1 
+#> Random error variance (sigma2): 1 
+#> 
 #> Monte Carlo power estimate, calculated as the
 #>   proportion of instances where the null hypothesis
 #>   H_0: beta = 0 is rejected (n = number of PDX lines,
 #>   m = number of animals per arm per PDX line,
-#>   N = total number of animals for a given combination of n and m).
-#> 
-#>    n m  N Power (%) for fixed effects
-#> 1  3 2 12                          22
-#> 2  3 3 18                          37
-#> 3  3 4 24                          36
-#> 4  5 2 20                          31
-#> 5  5 3 30                          49
-#> 6  5 4 40                          59
-#> 7 10 2 40                          58
-#> 8 10 3 60                          83
-#> 9 10 4 80                          89
+#>   N = total number of animals for a given combination
+#>   of n and m):
+#>    n m  N Power (%)
+#> 1  3 2 12        37
+#> 2  3 3 18        56
+#> 3  3 4 24        85
+#> 4  5 2 20        65
+#> 5  5 3 30        80
+#> 6  5 4 40        97
+#> 7 10 2 40        93
+#> 8 10 3 60        99
+#> 9 10 4 80       100
 ```
 
 Alternatively, one can run power analysis by fitting a Cox frailty
@@ -113,30 +114,58 @@ data(animals2)
 ### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
 PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
                         n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
-PowTab
 #> Parameter estimates based on the pilot data:
 #> Scale parameter (lambda): 0.0154 
 #> Shape parameter (nu): 2.1722 
 #> Treatment effect (beta): -0.8794 
 #> Variance of random effect (tau2): 0.0422 
+#> 
 #> Monte Carlo power estimate, calculated as the
 #>   proportion of instances where the null hypothesis
 #>   H_0: beta = 0 is rejected (n = number of PDX lines,
 #>   m = number of animals per arm per PDX line,
 #>   N = total number of animals for a given combination
-#>   of n and m).
-#> The mean censoring rate for each combination of n and m is calculated across  100  Monte Carlo samples.
+#>   of n and m,
+#>   Censoring Rate = average censoring rate across 500
+#>   Monte Carlo samples):
+#>    n m  N Power (%) for Cox's frailty Censoring Rate
+#> 1  3 2 12                       36.49              0
+#> 2  3 3 18                       42.35              0
+#> 3  3 4 24                       62.22              0
+#> 4  5 2 20                       49.30              0
+#> 5  5 3 30                       69.23              0
+#> 6  5 4 40                       78.72              0
+#> 7 10 2 40                       90.57              0
+#> 8 10 3 60                       88.78              0
+#> 9 10 4 80                       96.91              0
+PowTab
+#> $lambda
+#> [1] 0.01540157
 #> 
-#>    n m  N Power (%) for Cox frailty Censoring Rate
-#> 1  3 2 12                     36.49              0
-#> 2  3 3 18                     42.35              0
-#> 3  3 4 24                     62.22              0
-#> 4  5 2 20                     49.30              0
-#> 5  5 3 30                     69.23              0
-#> 6  5 4 40                     78.72              0
-#> 7 10 2 40                     90.57              0
-#> 8 10 3 60                     88.78              0
-#> 9 10 4 80                     96.91              0
+#> $nu
+#> [1] 2.172213
+#> 
+#> $beta
+#>        Tx 
+#> -0.879356 
+#> 
+#> $tau2
+#> [1] 0.04224566
+#> 
+#> $PowTab
+#>    n m  N Power (%) for Cox's frailty Censoring Rate
+#> 1  3 2 12                       36.49              0
+#> 2  3 3 18                       42.35              0
+#> 3  3 4 24                       62.22              0
+#> 4  5 2 20                       49.30              0
+#> 5  5 3 30                       69.23              0
+#> 6  5 4 40                       78.72              0
+#> 7 10 2 40                       90.57              0
+#> 8 10 3 60                       88.78              0
+#> 9 10 4 80                       96.91              0
+#> 
+#> attr(,"class")
+#> [1] "PowFrailtyDat"
 ```
 
 The following code generates a power curve based on the object `PowTab`.
@@ -146,37 +175,6 @@ plotpower(PowTab[[5]], ylim = c(0, 1))
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
-
-Or we can fit a Cox fixed effect model for running power analysis.
-
-``` r
-PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
-                        n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
-PowTab
-#> Parameter estimates based on the pilot data:
-#> Scale parameter (lambda): 0.0154 
-#> Shape parameter (nu): 2.1722 
-#> Treatment effect (beta): -0.8794 
-#> Variance of random effect (tau2): 0.0422 
-#> Monte Carlo power estimate, calculated as the
-#>   proportion of instances where the null hypothesis
-#>   H_0: beta = 0 is rejected (n = number of PDX lines,
-#>   m = number of animals per arm per PDX line,
-#>   N = total number of animals for a given combination
-#>   of n and m).
-#> The mean censoring rate for each combination of n and m is calculated across  100  Monte Carlo samples.
-#> 
-#>    n m  N Power (%) for Cox fixed effects Censoring Rate
-#> 1  3 2 12                              36              0
-#> 2  3 3 18                              48              0
-#> 3  3 4 24                              65              0
-#> 4  5 2 20                              57              0
-#> 5  5 3 30                              71              0
-#> 6  5 4 40                              83              0
-#> 7 10 2 40                              90              0
-#> 8 10 3 60                              92              0
-#> 9 10 4 80                              97              0
-```
 
 Alternatively, we may also conduct power analysis based on median
 survival of two randomized arms. We suppose that the median survival of
@@ -192,49 +190,23 @@ PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, 
 #> Scale parameter (lambda): 0.2888113 
 #> Shape parameter (nu): 1 
 #> Variance of random effect (tau2): 0.1 
+#> 
 #> Monte Carlo power estimate, calculated as the
 #>   proportion of instances where the null hypothesis
 #>   H_0: beta = 0 is rejected (n = number of PDX lines,
 #>   m = number of animals per arm per PDX line,
 #>   N = total number of animals for a given combination
-#>   of n and m).
-#> The mean censoring rate for each combination of n and m is calculated across  100  Monte Carlo samples.
-#> 
-#>    n m  N Power (%) for Cox frailty Censoring Rate
-#> 1  3 2 12                     22.45              0
-#> 2  3 3 18                     21.05              0
-#> 3  3 4 24                     41.41              0
-#> 4  5 2 20                     35.16              0
-#> 5  5 3 30                     44.79              0
-#> 6  5 4 40                     62.89              0
-#> 7 10 2 40                     67.01              0
-#> 8 10 3 60                     73.74              0
-#> 9 10 4 80                     86.73              0
-```
-
-``` r
-### Assume the time to event outcome is log-normal
-PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, icc = 0.25, sigma2 = 1, sim = 100,
-                   n = c(3, 5, 10), m = c(2, 3, 4))
-#> Treatment effect (beta): -0.6931472 
-#> Variance of random effect (tau2): 0.3333333 
-#> Intraclass correlation coefficient (icc): 0.25 
-#> Random error variance (sigma2): 1 
-#> Monte Carlo power estimate, calculated as the
-#>   proportion of instances where the null hypothesis
-#>   H_0: beta = 0 is rejected (n = number of PDX lines,
-#>   m = number of animals per arm per PDX line,
-#>   N = total number of animals for a given combination
-#>   of n and m).
-#> 
-#>    n m  N Power (%)
-#> 1  3 2 12        25
-#> 2  3 3 18        30
-#> 3  3 4 24        36
-#> 4  5 2 20        32
-#> 5  5 3 30        47
-#> 6  5 4 40        58
-#> 7 10 2 40        60
-#> 8 10 3 60        73
-#> 9 10 4 80        87
+#>   of n and m,
+#>   Censoring Rate = average censoring rate across 500
+#>   Monte Carlo samples):
+#>    n m  N Power (%) for Cox's frailty Censoring Rate
+#> 1  3 2 12                       22.45              0
+#> 2  3 3 18                       21.05              0
+#> 3  3 4 24                       41.41              0
+#> 4  5 2 20                       35.16              0
+#> 5  5 3 30                       44.79              0
+#> 6  5 4 40                       62.89              0
+#> 7 10 2 40                       67.01              0
+#> 8 10 3 60                       73.74              0
+#> 9 10 4 80                       86.73              0
 ```

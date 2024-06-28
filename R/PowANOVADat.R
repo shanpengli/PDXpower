@@ -11,6 +11,7 @@
 ##' @param two.sided a logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param alpha significance level. Default is 0.05.
 ##' @param fixed.effect logical value to indicate if a fixed effects only model is fitted. Default is FALSE.
+##' @param digits digits the number of significant digits to use when printing.
 ##' @param ncores number of cores for parallel computation.
 ##' @return Object of \code{PowANOVADat} with elements
 ##' \item{beta}{the estimated treatment effect from the pilot data.}
@@ -30,7 +31,7 @@
 
 PowANOVADat <- function(data = NULL, formula = NULL, random = NULL,
                         n = NULL, m = NULL,
-                        sim = 100, two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, ncores = NULL) {
+                        sim = 100, two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, digits = 4, ncores = NULL) {
 
   if (!is.data.frame(data))
     stop("This is not a date frame.")
@@ -59,6 +60,16 @@ PowANOVADat <- function(data = NULL, formula = NULL, random = NULL,
 
   class(result) <- "PowANOVADat"
 
+  cat("Parameter estimates based on the pilot data:\n")
+  cat("Treatment effect (beta):", round(result$beta, digits), "\n")
+  cat("Variance of random effect (tau2):", round(result$tau2, digits), "\n")
+  cat("Random error variance (sigma2):", round(result$sigma2, digits), "\n\n")
+  cat("Monte Carlo power estimate, calculated as the
+  proportion of instances where the null hypothesis
+  H_0: beta = 0 is rejected (n = number of PDX lines,
+  m = number of animals per arm per PDX line,
+  N = total number of animals for a given combination of n and m):\n")
+  print(result$PowTab)
   return(result)
 
 }

@@ -42,7 +42,6 @@ data(animals1)
 ### Power analysis on a preliminary dataset by assuming the time to event is log-normal
 PowTab <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
-PowTab
 ```
 
 The following code generates a power curve based on the object `PowTab`.
@@ -52,9 +51,10 @@ plotpower(PowTab[[4]], ylim = c(0, 1))
 
 Or we can fit a ANOVA fixed effect model for running power analysis.
 ```{r}
-PowTabfit <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
-                      random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
-PowTabfit
+### Power analysis by specifying the median survival
+### of control and treatment group and assuming
+### the time-to-event is log-normal distributed
+PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 7.2, icc = 0.1, sigma2 = 1, sim = 100, n = c(3, 5, 10), m = c(2, 3, 4))
 ```
 
 Alternatively, one can run power analysis by fitting a Cox frailty model. Here we present another dataset `animals2`. Particularly, we need to specify a formula that fits a Cox frailty model with correlating variables in `animals2`, where `ID` is the PDX line number, `Y` is the event time variable, `Tx` is the treatment variable, and `status` is the event status.
@@ -71,26 +71,11 @@ The following code generates a power curve based on the object `PowTab`.
 plotpower(PowTab[[5]], ylim = c(0, 1))
 ```
 
-Or we can fit a Cox fixed effect model for running power analysis.
-```{r}
-PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
-                        n = c(3, 5, 10), m = c(2, 3, 4), fixed.effect = TRUE, sim = 100)
-PowTab
-```
-
 Alternatively, we may also conduct power analysis based on median survival of two randomized arms. We suppose that the median survival of the control and treatment arm is 2.4 and 4.8, allowing a PDX line has 10% marginal error (`tau2=0.1`) of treatment effect and an exponential event time, a power analysis may be done as below:
 ```{r, eval=TRUE}
 ### Assume the time to event outcome is weibull-distributed
 PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, sim = 100,
                      n = c(3, 5, 10), m = c(2, 3, 4))
 ```
-
-
-```{r}
-### Assume the time to event outcome is log-normal
-PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 4.8, icc = 0.25, sigma2 = 1, sim = 100,
-                   n = c(3, 5, 10), m = c(2, 3, 4))
-```
-
 
 
