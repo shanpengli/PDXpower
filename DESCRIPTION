@@ -1,8 +1,8 @@
 Package: PDXpower
 Type: Package
 Title: Time to Event Outcome in Experimental Designs of Pre-Clinical Studies
-Version: 1.0.2
-Date: 2024-06-27
+Version: 1.0.3
+Date: 2024-07-05
 Authors@R: c(
     person("Shanpeng", "Li", email = "lishanpeng0913@ucla.edu", 
         role = c("aut", "cre")),
@@ -20,10 +20,11 @@ Description: Conduct simulation-based customized power calculation
 License: GPL (>= 2)
 Encoding: UTF-8
 Depends: R (>= 3.5.0),survival,stats,parallel
-Imports: nlme,frailtypack,ggplot2,ggpubr
+Imports: nlme,ggplot2,ggpubr
 RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0),
-    spelling
+    spelling,
+    frailtypack
 Language: en-US
 LazyData: true
