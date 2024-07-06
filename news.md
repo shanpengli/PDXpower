@@ -1,3 +1,7 @@
+# PDXpower 1.0.3
+
+* Fix description file setting.
+
 # PDXpower 1.0.2
 
 * Fix small bugs and modify the output to the functions.
