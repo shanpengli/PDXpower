@@ -1,3 +1,7 @@
+# PDXpower 1.0.4
+
+* Fix y axis labels for plotting.
+
 # PDXpower 1.0.3
 
 * Fix description file setting.
