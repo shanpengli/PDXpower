@@ -19,6 +19,12 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
   print <- object$print
   fixed.effect <- object$fixed.effect
 
+  if (object$beta == 0) {
+    ylab <- "Type I error"
+  } else {
+    ylab <- "Power"
+  }
+
   if (fixed.effect) {
     if (print == "both") {
       object <- data.frame(object$NofLine, object$NofAnimals,
@@ -45,7 +51,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for ANOVA fixed effects") +
+        ggplot2::ylab(paste(ylab, "for ANOVA fixed effects")) +
         ggplot2::xlab("Number of PDX lines")
 
       a2 <- ggplot2::ggplot(object, aes(x = `PDOX lines`, y = Coxfix,
@@ -64,7 +70,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for Cox fixed effects") +
+        ggplot2::ylab(paste(ylab, "for Cox fixed effects")) +
         ggplot2::xlab("Number of PDX lines")
 
       ggpubr::ggarrange(a1, a2, ncol = 2, nrow = 1, common.legend = TRUE,
@@ -95,7 +101,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for ANOVA fixed effects") +
+        ggplot2::ylab(paste(ylab, "for ANOVA fixed effects")) +
         ggplot2::xlab("Number of PDX lines")
 
     } else {
@@ -123,7 +129,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for Cox fixed effects") +
+        ggplot2::ylab(paste(ylab, "for Cox fixed effects")) +
         ggplot2::xlab("Number of PDX lines")
 
     }
@@ -154,7 +160,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for mixed effects ANOVA model") +
+        ggplot2::ylab(paste(ylab, "for mixed effects ANOVA model")) +
         ggplot2::xlab("Number of PDX lines")
 
       a2 <- ggplot2::ggplot(object,
@@ -174,7 +180,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for Cox's frailty model") +
+        ggplot2::ylab(paste(ylab, "for Cox's frailty model")) +
         ggplot2::xlab("Number of PDX lines")
 
       ggpubr::ggarrange(a1, a2, ncol = 2, nrow = 1, common.legend = TRUE,
@@ -205,7 +211,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for mixed effects ANOVA model") +
+        ggplot2::ylab(paste(ylab, "for mixed effects ANOVA model")) +
         ggplot2::xlab("Number of PDX lines")
     } else {
 
@@ -233,7 +239,7 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
                                     expand = c(0, 0),
                                     n.breaks = y.axis.n.breaks) +
         ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab("Power for Cox's frailty model") +
+        ggplot2::ylab(paste(ylab, "for Cox's frailty model")) +
         ggplot2::xlab("Number of PDX lines")
     }
 
