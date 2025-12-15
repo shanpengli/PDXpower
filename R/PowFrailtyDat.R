@@ -13,7 +13,6 @@
 ##' @param Ct a fixed time point when a study is designed to end for generating type 1 censoring data.
 ##' @param two.sided A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param alpha significance level. Default is 0.05.
-##' @param fixed.effect logical value to indicate if a fixed effects only model is fitted. Default is FALSE.
 ##' @param digits digits the number of significant digits to use when printing.
 ##' @param ncores number of cores for parallel computation.
 ##' @return Object of \code{PowFrailtyDat} with elements
@@ -26,18 +25,20 @@
 ##' @examples
 ##' \donttest{
 ##' require(PDXpower)
+##' require(frailtypack)
 ##' data(animals2)
-##' PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y,status) ~ Tx + cluster(ID),
-##' n = 3, m = 2, ncores = 1)
-##' PowTab
+##' PowTab <- PowFrailtyDat(data = animals2,
+##'                         formula = survival::Surv(Y,status) ~ Tx + cluster(ID),
+##'                         n = 3, m = 4,
+##'                         Ct = 12, censor = TRUE,
+##'                         sim = 20, ncores = 1)
 ##' plotpower(PowTab[[5]], ylim = c(0, 1))
 ##' }
-##'
 ##' @export
 
 PowFrailtyDat <- function(data = NULL, formula = NULL, maxit = 50, hazard = "Weibull",
                           n = NULL, m = NULL, sim = 1000, censor = FALSE, Ct = 5,
-                          two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, digits = 4, ncores = NULL) {
+                          two.sided = TRUE, alpha = 0.05, digits = 4, ncores = NULL) {
 
   if (!is.data.frame(data))
     stop("This is not a date frame.")
@@ -60,7 +61,6 @@ PowFrailtyDat <- function(data = NULL, formula = NULL, maxit = 50, hazard = "Wei
                     two.sided = two.sided, Ct = Ct,
                     print = "Cox-frailty",
                     alpha = alpha,
-                    fixed.effect = fixed.effect,
                     ncores = ncores)
 
   result <- list(lambda = lambda, nu = nu, beta = beta, tau2 = tau2, PowTab = fit)

@@ -12,7 +12,6 @@
 ##' @param sim Number of Monte Carlo samples to be generated. Default is 100.
 ##' @param two.sided A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param alpha significance level. Default is 0.05.
-##' @param fixed.effect logical value to indicate if a fixed effects only model is fitted. Default is FALSE.
 ##' @param ncores number of cores for parallel computation.
 ##' @return Object of \code{PowANOVA} with elements
 ##' \item{PowTab}{the estimates of statistical power across \code{n} and \code{m}.}
@@ -29,7 +28,7 @@
 
 PowANOVA <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = NULL, icc = 0.1, sigma2 = 1,
                        n = NULL, m = NULL, sim = 100,
-                       two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, ncores = NULL) {
+                       two.sided = TRUE, alpha = 0.05, ncores = NULL) {
 
   beta <- log(ctl.med.surv/tx.med.surv)
 
@@ -41,11 +40,12 @@ PowANOVA <- function(ctl.med.surv = 2.4, tx.med.surv = 4.8, tau2 = NULL, icc = 0
     stop("Please either specify tau2 or icc at a time.")
   }
 
-  PowTab <- PowerTable(n = n, m = m, beta = beta, sigma2 = sigma2,
+  beta0 = log(ctl.med.surv)
+
+  PowTab <- PowerTable(n = n, m = m, beta0 = beta0, beta = beta, sigma2 = sigma2,
                     tau2 = tau2, distr = "normal", sim = sim,
                     censor = FALSE, two.sided = two.sided, print = "ANOVA",
                     alpha = alpha,
-                    fixed.effect = fixed.effect,
                     ncores = ncores)
 
   cat("Treatment effect (beta):", beta, "\n")

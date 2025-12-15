@@ -16,7 +16,6 @@ PowANOVA(
   sim = 100,
   two.sided = TRUE,
   alpha = 0.05,
-  fixed.effect = FALSE,
   ncores = NULL
 )
 }
@@ -41,8 +40,6 @@ then tau2 will be calculated automatically. Otherwise, \code{tau2} must be speci
 \item{two.sided}{A logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
 
 \item{alpha}{significance level. Default is 0.05.}
-
-\item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
 
 \item{ncores}{number of cores for parallel computation.}
 }

@@ -20,9 +20,6 @@ Object of \code{print.PowerTable} with elements
 \description{
 Print PowerTable
 }
-\seealso{
-\code{\link{PowerTable}}
-}
 \author{
 Shanpeng Li \email{lishanpeng0913@ucla.edu}
 }

@@ -36,8 +36,6 @@ Next, run power analysis by fitting a ANOVA mixed effects model on
 
 ``` r
 library(PDXpower)
-#> Loading required package: survival
-#> Loading required package: parallel
 data(animals1)
 ### Power analysis on a preliminary dataset by assuming the time to event is log-normal
 PowTab <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
@@ -71,14 +69,17 @@ plotpower(PowTab[[4]], ylim = c(0, 1))
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
-
-Or we can fit a ANOVA fixed effect model for running power analysis.
+Alternatively, we may also conduct power analysis based on median
+survival of two randomized arms without the preliminary data. We suppose
+that the median survival of the control and treatment arm is 2.4 and
+7.2, assuming the intra-class correlation of 10%, a power analysis may
+be done as below:
 
 ``` r
-### Power analysis by specifying the median survival
-### of control and treatment group and assuming
-### the time-to-event is log-normal distributed
-PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 7.2, icc = 0.1, sigma2 = 1, sim = 100, n = c(3, 5, 10), m = c(2, 3, 4))
+### Assume the time to event outcome is log-normal distributed
+PowTab <- PowANOVA(ctl.med.surv = 2.4,
+                   tx.med.surv = 7.2, icc = 0.1, sigma2 = 1, sim = 100, 
+                   n = c(3, 5, 10), m = c(2, 3, 4))
 #> Treatment effect (beta): -1.098612 
 #> Variance of random effect (tau2): 0.1111111 
 #> Intra-PDX correlation coefficient (icc): 0.1 
@@ -100,7 +101,10 @@ PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 7.2, icc = 0.1, sigma2 = 1,
 #> 7 10 2 40        93
 #> 8 10 3 60        99
 #> 9 10 4 80       100
+plotpower(PowTab, ylim = c(0, 1))
 ```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 Alternatively, one can run power analysis by fitting a Cox frailty
 model. Here we present another dataset `animals2`. Particularly, we need
@@ -129,52 +133,19 @@ PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y, status) ~ Tx + cluste
 #>   Censoring Rate = average censoring rate across 500
 #>   Monte Carlo samples):
 #>    n m  N Power (%) for Cox's frailty Censoring Rate
-#> 1  3 2 12                       36.49              0
-#> 2  3 3 18                       42.35              0
-#> 3  3 4 24                       62.22              0
-#> 4  5 2 20                       49.30              0
-#> 5  5 3 30                       69.23              0
-#> 6  5 4 40                       78.72              0
-#> 7 10 2 40                       90.57              0
-#> 8 10 3 60                       88.78              0
-#> 9 10 4 80                       96.91              0
-PowTab
-#> $lambda
-#> [1] 0.01540157
-#> 
-#> $nu
-#> [1] 2.172213
-#> 
-#> $beta
-#>        Tx 
-#> -0.879356 
-#> 
-#> $tau2
-#> [1] 0.04224566
-#> 
-#> $PowTab
-#>    n m  N Power (%) for Cox's frailty Censoring Rate
-#> 1  3 2 12                       36.49              0
-#> 2  3 3 18                       42.35              0
-#> 3  3 4 24                       62.22              0
-#> 4  5 2 20                       49.30              0
-#> 5  5 3 30                       69.23              0
-#> 6  5 4 40                       78.72              0
-#> 7 10 2 40                       90.57              0
-#> 8 10 3 60                       88.78              0
-#> 9 10 4 80                       96.91              0
-#> 
-#> attr(,"class")
-#> [1] "PowFrailtyDat"
-```
-
-The following code generates a power curve based on the object `PowTab`.
-
-``` r
+#> 1  3 2 12                       36.49             NA
+#> 2  3 3 18                       42.35             NA
+#> 3  3 4 24                       62.22             NA
+#> 4  5 2 20                       49.30             NA
+#> 5  5 3 30                       69.23             NA
+#> 6  5 4 40                       78.72             NA
+#> 7 10 2 40                       90.57             NA
+#> 8 10 3 60                       88.78             NA
+#> 9 10 4 80                       96.91             NA
 plotpower(PowTab[[5]], ylim = c(0, 1))
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 Alternatively, we may also conduct power analysis based on median
 survival of two randomized arms. We suppose that the median survival of
@@ -200,13 +171,16 @@ PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, 
 #>   Censoring Rate = average censoring rate across 500
 #>   Monte Carlo samples):
 #>    n m  N Power (%) for Cox's frailty Censoring Rate
-#> 1  3 2 12                       22.45              0
-#> 2  3 3 18                       21.05              0
-#> 3  3 4 24                       41.41              0
-#> 4  5 2 20                       35.16              0
-#> 5  5 3 30                       44.79              0
-#> 6  5 4 40                       62.89              0
-#> 7 10 2 40                       67.01              0
-#> 8 10 3 60                       73.74              0
-#> 9 10 4 80                       86.73              0
+#> 1  3 2 12                       22.45             NA
+#> 2  3 3 18                       21.05             NA
+#> 3  3 4 24                       41.41             NA
+#> 4  5 2 20                       35.16             NA
+#> 5  5 3 30                       44.79             NA
+#> 6  5 4 40                       62.89             NA
+#> 7 10 2 40                       67.01             NA
+#> 8 10 3 60                       73.74             NA
+#> 9 10 4 80                       86.73             NA
+plotpower(PowTab, ylim = c(0, 1))
 ```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />

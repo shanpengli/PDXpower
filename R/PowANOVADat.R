@@ -10,7 +10,6 @@
 ##' @param sim Number of Monte Carlo samples to be generated. Default is 1000.
 ##' @param two.sided a logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.
 ##' @param alpha significance level. Default is 0.05.
-##' @param fixed.effect logical value to indicate if a fixed effects only model is fitted. Default is FALSE.
 ##' @param digits digits the number of significant digits to use when printing.
 ##' @param ncores number of cores for parallel computation.
 ##' @return Object of \code{PowANOVADat} with elements
@@ -31,7 +30,7 @@
 
 PowANOVADat <- function(data = NULL, formula = NULL, random = NULL,
                         n = NULL, m = NULL,
-                        sim = 100, two.sided = TRUE, alpha = 0.05, fixed.effect = FALSE, digits = 4, ncores = NULL) {
+                        sim = 100, two.sided = TRUE, alpha = 0.05, digits = 4, ncores = NULL) {
 
   if (!is.data.frame(data))
     stop("This is not a date frame.")
@@ -53,7 +52,6 @@ PowANOVADat <- function(data = NULL, formula = NULL, random = NULL,
                     censor = FALSE,
                     print = "ANOVA",
                     alpha = alpha,
-                    fixed.effect = fixed.effect,
                     ncores = ncores)
 
   result <- list(beta = beta, tau2 = tau2, sigma2 = sigma2, PowTab = fit)

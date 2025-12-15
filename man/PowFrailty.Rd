@@ -17,7 +17,6 @@ PowFrailty(
   Ct = 5,
   two.sided = TRUE,
   alpha = 0.05,
-  fixed.effect = FALSE,
   ncores = NULL
 )
 }
@@ -44,8 +43,6 @@ PowFrailty(
 
 \item{alpha}{significance level. Default is 0.05.}
 
-\item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
-
 \item{ncores}{number of cores for parallel computation.}
 }
 \value{
@@ -59,9 +56,9 @@ various number of PDX lines and number of individuals per PDX lines per treatmen
 \examples{
 \donttest{
 require(PDXpower)
-PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, sim = 100,
-n = 3, m = 2, ncores = 1)
-PowTab
+PowTab <- PowFrailty(ctl.med.surv = 2.4,
+tx.med.surv = 7.2, nu = 1, tau2 = 0.1, sim = 20,
+censor = TRUE, Ct = 12, n = 3, m = 4, ncores = 1)
 plotpower(PowTab, ylim = c(0, 1))
 }
 }

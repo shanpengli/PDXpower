@@ -17,7 +17,6 @@ PowFrailtyDat(
   Ct = 5,
   two.sided = TRUE,
   alpha = 0.05,
-  fixed.effect = FALSE,
   digits = 4,
   ncores = NULL
 )
@@ -46,8 +45,6 @@ The response must be a survival object as returned by the Surv function.}
 
 \item{alpha}{significance level. Default is 0.05.}
 
-\item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
-
 \item{digits}{digits the number of significant digits to use when printing.}
 
 \item{ncores}{number of cores for parallel computation.}
@@ -68,11 +65,13 @@ various number of PDX lines and number of individuals per PDX lines per treatmen
 \examples{
 \donttest{
 require(PDXpower)
+require(frailtypack)
 data(animals2)
-PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y,status) ~ Tx + cluster(ID),
-n = 3, m = 2, ncores = 1)
-PowTab
+PowTab <- PowFrailtyDat(data = animals2,
+                        formula = survival::Surv(Y,status) ~ Tx + cluster(ID),
+                        n = 3, m = 4,
+                        Ct = 12, censor = TRUE,
+                        sim = 20, ncores = 1)
 plotpower(PowTab[[5]], ylim = c(0, 1))
 }
-
 }

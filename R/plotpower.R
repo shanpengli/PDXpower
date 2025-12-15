@@ -17,7 +17,6 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
     stop("Use only with 'PowerTable' objects.\n")
 
   print <- object$print
-  fixed.effect <- object$fixed.effect
 
   if (object$beta == 0) {
     ylab <- "Type I error"
@@ -25,224 +24,114 @@ plotpower <- function(object, ylim = c(0, 0.1), x.axis.n.breaks = 10, y.axis.n.b
     ylab <- "Power"
   }
 
-  if (fixed.effect) {
-    if (print == "both") {
-      object <- data.frame(object$NofLine, object$NofAnimals,
-                           object$ANOVAfix,
-                           object$Coxfix)
 
-      colnames(object) <- c("PDOX lines", "Number of Animals", "ANOVAfix", "Coxfix")
+  if (print == "both") {
+    object <- data.frame(object$NofLine, object$NofAnimals,
+                         object$ANOVArandom,
+                         object$Coxrandom)
 
-      object$`Number of Animals` <- as.factor(object$`Number of Animals`)
+    colnames(object) <- c("PDOX lines", "Number of Animals", "ANOVArandom", "Coxrandom")
 
-      a1 <- ggplot2::ggplot(object, aes(x = `PDOX lines`, y = ANOVAfix,
-                                                 group = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for ANOVA fixed effects")) +
-        ggplot2::xlab("Number of PDX lines")
+    object$`Number of Animals` <- as.factor(object$`Number of Animals`)
 
-      a2 <- ggplot2::ggplot(object, aes(x = `PDOX lines`, y = Coxfix,
-                                         group = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for Cox fixed effects")) +
-        ggplot2::xlab("Number of PDX lines")
+    a1 <- ggplot2::ggplot(object,
+                          aes(x = `PDOX lines`, y = ANOVArandom,
+                              group = `Number of Animals`)) +
+      ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
+      ggplot2::geom_point(colour="white", stroke = 5) +
+      ggplot2::geom_text(aes(label = `Number of Animals`)) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(legend.position = legend.position,
+                     panel.border = element_blank(),
+                     panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.line = element_line(colour = "black")) +
+      ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
+      ggplot2::scale_y_continuous(limits = ylim,
+                                  expand = c(0, 0),
+                                  n.breaks = y.axis.n.breaks) +
+      ggplot2::geom_hline(yintercept = cut.off) +
+      ggplot2::ylab(paste(ylab, "for mixed effects ANOVA model")) +
+      ggplot2::xlab("Number of PDX lines")
 
-      ggpubr::ggarrange(a1, a2, ncol = 2, nrow = 1, common.legend = TRUE,
-                        legend = "right")
+    a2 <- ggplot2::ggplot(object,
+                          aes(x = `PDOX lines`, y = Coxrandom,
+                              group = `Number of Animals`)) +
+      ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
+      ggplot2::geom_point(colour="white", stroke = 5) +
+      ggplot2::geom_text(aes(label = `Number of Animals`)) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(legend.position = legend.position,
+                     panel.border = element_blank(),
+                     panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.line = element_line(colour = "black")) +
+      ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
+      ggplot2::scale_y_continuous(limits = ylim,
+                                  expand = c(0, 0),
+                                  n.breaks = y.axis.n.breaks) +
+      ggplot2::geom_hline(yintercept = cut.off) +
+      ggplot2::ylab(paste(ylab, "for Cox's frailty model")) +
+      ggplot2::xlab("Number of PDX lines")
 
+    ggpubr::ggarrange(a1, a2, ncol = 2, nrow = 1, common.legend = TRUE,
+                      legend = "right")
 
-    } else if (print == "ANOVA") {
+  } else if (print == "ANOVA") {
 
-      object <- data.frame(object$NofLine, object$NofAnimals, object$ANOVAfix)
+    object <- data.frame(object$NofLine, object$NofAnimals,
+                         object$ANOVArandom)
 
-      colnames(object) <- c("PDOX lines", "Number of Animals", "ANOVAfix")
+    colnames(object) <- c("PDOX lines", "Number of Animals", "ANOVArandom")
 
-      object$`Number of Animals` <- as.factor(object$`Number of Animals`)
+    object$`Number of Animals` <- as.factor(object$`Number of Animals`)
 
-      ggplot2::ggplot(object, aes(x = `PDOX lines`, y = ANOVAfix,
-                                                 group = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for ANOVA fixed effects")) +
-        ggplot2::xlab("Number of PDX lines")
-
-    } else {
-
-      object <- data.frame(object$NofLine, object$NofAnimals, object$Coxfix)
-
-      colnames(object) <- c("PDOX lines", "Number of Animals", "Coxfix")
-
-      object$`Number of Animals` <- as.factor(object$`Number of Animals`)
-
-      ggplot2::ggplot(object, aes(x = `PDOX lines`, y = Coxfix,
-                                         group = `Number of Animals`,
-                                         color = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for Cox fixed effects")) +
-        ggplot2::xlab("Number of PDX lines")
-
-    }
+    ggplot2::ggplot(object, aes(x = `PDOX lines`, y = ANOVArandom,
+                                group = `Number of Animals`)) +
+      ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
+      ggplot2::geom_point(colour="white", stroke = 5) +
+      ggplot2::geom_text(aes(label = `Number of Animals`)) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(legend.position = legend.position,
+                     panel.border = element_blank(),
+                     panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.line = element_line(colour = "black")) +
+      ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
+      ggplot2::scale_y_continuous(limits = ylim,
+                                  expand = c(0, 0),
+                                  n.breaks = y.axis.n.breaks) +
+      ggplot2::geom_hline(yintercept = cut.off) +
+      ggplot2::ylab(paste(ylab, "for mixed effects ANOVA model")) +
+      ggplot2::xlab("Number of PDX lines")
   } else {
-    if (print == "both") {
-      object <- data.frame(object$NofLine, object$NofAnimals,
-                           object$ANOVArandom,
-                           object$Coxrandom)
 
-      colnames(object) <- c("PDOX lines", "Number of Animals", "ANOVArandom", "Coxrandom")
+    object <- data.frame(object$NofLine, object$NofAnimals,
+                         object$Coxrandom)
 
-      object$`Number of Animals` <- as.factor(object$`Number of Animals`)
+    colnames(object) <- c("PDOX lines", "Number of Animals", "Coxrandom")
 
-      a1 <- ggplot2::ggplot(object,
-                            aes(x = `PDOX lines`, y = ANOVArandom,
-                                         group = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for mixed effects ANOVA model")) +
-        ggplot2::xlab("Number of PDX lines")
+    object$`Number of Animals` <- as.factor(object$`Number of Animals`)
 
-      a2 <- ggplot2::ggplot(object,
-                            aes(x = `PDOX lines`, y = Coxrandom,
-                                         group = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for Cox's frailty model")) +
-        ggplot2::xlab("Number of PDX lines")
-
-      ggpubr::ggarrange(a1, a2, ncol = 2, nrow = 1, common.legend = TRUE,
-                        legend = "right")
-
-    } else if (print == "ANOVA") {
-
-      object <- data.frame(object$NofLine, object$NofAnimals,
-                           object$ANOVArandom)
-
-      colnames(object) <- c("PDOX lines", "Number of Animals", "ANOVArandom")
-
-      object$`Number of Animals` <- as.factor(object$`Number of Animals`)
-
-      ggplot2::ggplot(object, aes(x = `PDOX lines`, y = ANOVArandom,
-                                           group = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for mixed effects ANOVA model")) +
-        ggplot2::xlab("Number of PDX lines")
-    } else {
-
-      object <- data.frame(object$NofLine, object$NofAnimals,
-                           object$Coxrandom)
-
-      colnames(object) <- c("PDOX lines", "Number of Animals", "Coxrandom")
-
-      object$`Number of Animals` <- as.factor(object$`Number of Animals`)
-
-      ggplot2::ggplot(object,
-                      aes(x = `PDOX lines`, y = Coxrandom,
-                                   group = `Number of Animals`)) +
-        ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
-        ggplot2::geom_point(colour="white", stroke = 5) +
-        ggplot2::geom_text(aes(label = `Number of Animals`)) +
-        ggplot2::theme_bw() +
-        ggplot2::theme(legend.position = legend.position,
-                       panel.border = element_blank(),
-                       panel.grid.major = element_blank(),
-                       panel.grid.minor = element_blank(),
-                       axis.line = element_line(colour = "black")) +
-        ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
-        ggplot2::scale_y_continuous(limits = ylim,
-                                    expand = c(0, 0),
-                                    n.breaks = y.axis.n.breaks) +
-        ggplot2::geom_hline(yintercept = cut.off) +
-        ggplot2::ylab(paste(ylab, "for Cox's frailty model")) +
-        ggplot2::xlab("Number of PDX lines")
-    }
-
+    ggplot2::ggplot(object,
+                    aes(x = `PDOX lines`, y = Coxrandom,
+                        group = `Number of Animals`)) +
+      ggplot2::geom_line(aes(linetype = `Number of Animals`)) +
+      ggplot2::geom_point(colour="white", stroke = 5) +
+      ggplot2::geom_text(aes(label = `Number of Animals`)) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(legend.position = legend.position,
+                     panel.border = element_blank(),
+                     panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(),
+                     axis.line = element_line(colour = "black")) +
+      ggplot2::scale_x_continuous(n.breaks = x.axis.n.breaks) +
+      ggplot2::scale_y_continuous(limits = ylim,
+                                  expand = c(0, 0),
+                                  n.breaks = y.axis.n.breaks) +
+      ggplot2::geom_hline(yintercept = cut.off) +
+      ggplot2::ylab(paste(ylab, "for Cox's frailty model")) +
+      ggplot2::xlab("Number of PDX lines")
   }
 
 }

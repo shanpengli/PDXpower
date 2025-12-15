@@ -43,31 +43,26 @@ data(animals1)
 PowTab <- PowANOVADat(data = animals1, formula = log(Y) ~ Tx, 
                       random = ~ 1|ID, n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
 ```
-
 The following code generates a power curve based on the object `PowTab`.
 ```{r}
 plotpower(PowTab[[4]], ylim = c(0, 1))
 ```
-
-Or we can fit a ANOVA fixed effect model for running power analysis.
-```{r}
-### Power analysis by specifying the median survival
-### of control and treatment group and assuming
-### the time-to-event is log-normal distributed
-PowTab <- PowANOVA(ctl.med.surv = 2.4, tx.med.surv = 7.2, icc = 0.1, sigma2 = 1, sim = 100, n = c(3, 5, 10), m = c(2, 3, 4))
+Alternatively, we may also conduct power analysis based on median survival of two randomized arms without the preliminary data. We suppose that the median survival of the control and treatment arm is 2.4 and 7.2, assuming the intra-class correlation of 10%, a power analysis may be done as below:
+```{r, eval=TRUE}
+### Assume the time to event outcome is log-normal distributed
+PowTab <- PowANOVA(ctl.med.surv = 2.4,
+                   tx.med.surv = 7.2, icc = 0.1, sigma2 = 1, sim = 100, 
+                   n = c(3, 5, 10), m = c(2, 3, 4))
+plotpower(PowTab, ylim = c(0, 1))
 ```
 
+
 Alternatively, one can run power analysis by fitting a Cox frailty model. Here we present another dataset `animals2`. Particularly, we need to specify a formula that fits a Cox frailty model with correlating variables in `animals2`, where `ID` is the PDX line number, `Y` is the event time variable, `Tx` is the treatment variable, and `status` is the event status.
-```{r, eval=TRUE}
+```{r}
 data(animals2)
 ### Power analysis on a preliminary dataset by assuming the time to event is Weibull-distributed
 PowTab <- PowFrailtyDat(data = animals2, formula = Surv(Y, status) ~ Tx + cluster(ID), 
                         n = c(3, 5, 10), m = c(2, 3, 4), sim = 100)
-PowTab
-```
-
-The following code generates a power curve based on the object `PowTab`.
-```{r}
 plotpower(PowTab[[5]], ylim = c(0, 1))
 ```
 
@@ -76,6 +71,7 @@ Alternatively, we may also conduct power analysis based on median survival of tw
 ### Assume the time to event outcome is weibull-distributed
 PowTab <- PowFrailty(ctl.med.surv = 2.4, tx.med.surv = 4.8, nu = 1, tau2 = 0.1, sim = 100,
                      n = c(3, 5, 10), m = c(2, 3, 4))
+plotpower(PowTab, ylim = c(0, 1))
 ```
 
 

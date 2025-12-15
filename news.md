@@ -1,3 +1,7 @@
+# PDXpower 1.0.5
+
+* Remove fixed effects option in this package.
+
 # PDXpower 1.0.4
 
 * Fix y axis labels for plotting.

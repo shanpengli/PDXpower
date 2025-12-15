@@ -14,7 +14,6 @@ PowANOVADat(
   sim = 100,
   two.sided = TRUE,
   alpha = 0.05,
-  fixed.effect = FALSE,
   digits = 4,
   ncores = NULL
 )
@@ -36,8 +35,6 @@ with the response on the left of a ~ operator and the terms, separated by + oper
 \item{two.sided}{a logical value to indicate if a two-sided hypothesis testing is conducted. Default is TRUE.}
 
 \item{alpha}{significance level. Default is 0.05.}
-
-\item{fixed.effect}{logical value to indicate if a fixed effects only model is fitted. Default is FALSE.}
 
 \item{digits}{digits the number of significant digits to use when printing.}
 
